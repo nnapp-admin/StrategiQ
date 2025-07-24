@@ -60,7 +60,7 @@ export default function AboutPage() {
               <p>We may use analytics tools and services to improve performance, all of which comply with relevant privacy regulations.</p>
               <h3>7. Changes</h3>
               <p>We may update this policy. Continued use of the platform constitutes acceptance of any changes.</p>
-              <p>For any questions, contact us at <a href="mailto:privacy@strategiq.com">privacy@strategiq.com</a>.</p>
+              <p>For any questions, contact us at <a href="mailto:cassini.corporation@gmail.com">cassini.corporation@gmail.com</a>.</p>
             </div>
           </section>
 
@@ -89,7 +89,7 @@ export default function AboutPage() {
               <p>We reserve the right to remove profiles or restrict access if users violate these terms or harm the integrity of the community.</p>
               <h3>7. Modifications</h3>
               <p>We may modify these terms. We'll notify users of significant changes. Continued use of the platform means you accept the revised terms.</p>
-              <p>For legal inquiries, contact us at <a href="mailto:legal@strategiq.com">legal@strategiq.com</a>.</p>
+              <p>For legal inquiries, contact us at <a href="mailto:cassini.corporation@gmail.com">cassini.corporation@gmail.com</a>.</p>
             </div>
           </section>
         </main>

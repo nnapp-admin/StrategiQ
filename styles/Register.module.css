@@ -19,7 +19,6 @@
   padding: 1rem 0;
   border-bottom: 1px solid #333;
   box-sizing: border-box;
-  Zoom: 10px;
   overflow-x: hidden;
 }
 
@@ -87,11 +86,11 @@
 }
 
 .intro p:not(:last-child) {
-  text-align: justify; /* Justified alignment for first three paragraphs */
+  text-align: justify;
 }
 
 .intro p:last-child {
-  text-align: center; /* Center alignment for the last paragraph */
+  text-align: center;
 }
 
 .registerForm {
@@ -137,14 +136,14 @@
 }
 
 .formGroup input[type="file"] {
-  display: none; /* Hide the default file input */
+  display: none;
 }
 
 .profileCard {
-  width: 200px; /* Square dimensions */
+  width: 200px;
   height: 200px;
-  background: #333; /* Dark background to match your image */
-  border: 2px solid #8b0000; /* Red border to match your image */
+  background: #333;
+  border: 2px solid #8b0000;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -164,7 +163,7 @@
 .previewImage {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures the image fills the square without distortion */
+  object-fit: cover;
 }
 
 .profileCard .removeButton {
@@ -182,31 +181,7 @@
 }
 
 .profileCard .removeButton:hover {
-  color: #ff69b4; /* Pink on hover to match the upload icon */
-}
-
-.uploadContainer .removeButton {
-  background: none;
-  border: none;
-  color: #ffffff;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 0;
-  line-height: 1;
-  transition: color 0.3s ease;
-}
-
-.uploadContainer .removeButton:hover {
-  color: #008035;
-}
-
-.customFileUpload {
-  color: #008035; /* Pink text to match your image */
-  font-size: 1.2rem;
-  text-align: center;
-  width: 100%;
-  padding: 1rem;
-  cursor: pointer;
+  color: #ff69b4;
 }
 
 .uploadContainer {
@@ -231,6 +206,30 @@
   text-align: center;
   flex-grow: 1;
   word-break: break-all;
+}
+
+.uploadContainer .removeButton {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+
+.uploadContainer .removeButton:hover {
+  color: #008035;
+}
+
+.customFileUpload {
+  color: #008035;
+  font-size: 1.2rem;
+  text-align: center;
+  width: 100%;
+  padding: 1rem;
+  cursor: pointer;
 }
 
 .sectionHeader {
@@ -391,6 +390,21 @@
   box-shadow: 0 6px 20px rgba(139, 0, 0, 0.4);
 }
 
+.contactLink {
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.contactLink a {
+  color: #999999;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.contactLink a:hover {
+  text-decoration: underline;
+}
+
 .error {
   color: #ff0000;
   font-size: 0.9rem;
@@ -447,7 +461,7 @@
   }
 
   .registerSection {
-    padding: 8rem 0 4rem 0; /* Increased padding-top to clear the header */
+    padding: 8rem 0 4rem 0;
   }
 
   .registerSection h1 {

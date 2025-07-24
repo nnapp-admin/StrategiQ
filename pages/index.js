@@ -8,6 +8,7 @@ export default function SplashPage() {
   const fullText = 'Every StartUp has a story. This one begins with a click.';
   const [displayedText, setDisplayedText] = useState('');
   const [index, setIndex] = useState(0);
+  const [isAnimationComplete, setIsAnimationComplete] = useState(false);
 
   useEffect(() => {
     if (index < fullText.length) {
@@ -16,13 +17,19 @@ export default function SplashPage() {
         setIndex(index + 1);
       }, 100); // Adjust speed of typing here (100ms per character)
       return () => clearTimeout(typingTimeout);
+    } else {
+      setIsAnimationComplete(true); // Animation is complete
     }
   }, [index, fullText]);
 
-  const handleLogoClick = () => {
-    router
+  const handleTextClick = () => {
+    if (isAnimationComplete) {
+      router.push('/landingPage');
+    }
+  };
 
-.push('/landingPage');
+  const handleLogoClick = () => {
+    router.push('/landingPage');
   };
 
   return (
@@ -49,7 +56,15 @@ export default function SplashPage() {
           onClick={handleLogoClick}
           style={{ cursor: 'pointer' }}
         />
-        <h1 className={styles.tagline}>{displayedText}<span className={styles.cursor}>|</span></h1>
+        <div
+          onClick={handleTextClick}
+          style={{ cursor: isAnimationComplete ? 'pointer' : 'default' }}
+        >
+          <h1 className={styles.tagline}>
+            {displayedText}
+            <span className={styles.cursor}>|</span>
+          </h1>
+        </div>
       </div>
     </>
   );

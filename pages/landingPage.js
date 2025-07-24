@@ -28,20 +28,23 @@ export default function LandingPage() {
       observer.observe(el);
     });
 
-    // Smooth scrolling for navigation links
+    // Smooth scrolling for navigation links (exclude footer links)
     const handleSmoothScroll = (e) => {
       e.preventDefault();
       const targetId = e.currentTarget.getAttribute('href');
-      const target = document.querySelector(targetId);
-      if (target) {
-        target.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        });
+      if (targetId && targetId !== '#') { // Ensure valid targetId
+        const target = document.querySelector(targetId);
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+        }
       }
     };
 
-    const anchors = document.querySelectorAll('a[href^="#"]');
+    // Select only non-footer links for smooth scrolling
+    const anchors = document.querySelectorAll('a[href^="#"]:not(.footer-link)');
     anchors.forEach((anchor) => {
       anchor.addEventListener('click', handleSmoothScroll);
     });
@@ -92,7 +95,7 @@ export default function LandingPage() {
     setTimeout(() => {
       setIsMessageVisible(false);
       setIsLoginModalOpen(false);
-    }, 5000); // Hide message and close modal after 3 seconds
+    }, 5000); // Hide message and close modal after 5 seconds
   };
 
   // Handler for footer links to navigate to about page
@@ -184,21 +187,34 @@ export default function LandingPage() {
         <footer>
           <div className="container">
             <div className="footer-content">
-              <div className="footer-section">
-              </div>
-              <div className="footer-section">
-              </div>
+              <div className="footer-section"></div>
+              <div className="footer-section"></div>
               <div className="footer-section company-section">
                 <h3>Company</h3>
                 <ul>
-                  <li><a href="#" onClick={handleFooterLinkClick}>About Us</a></li>
-                  <li><a href="#" onClick={handleFooterLinkClick}>Privacy Policy</a></li>
-                  <li><a href="#" onClick={handleFooterLinkClick}>Terms of Service</a></li>
-                  <li><a href="#" onClick={handleFooterLinkClick}>Careers</a></li>
+                  <li>
+                    <a href="/About" className="footer-link" onClick={handleFooterLinkClick}>
+                      About Us
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/About" className="footer-link" onClick={handleFooterLinkClick}>
+                      Privacy Policy
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/About" className="footer-link" onClick={handleFooterLinkClick}>
+                      Terms of Service
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/About" className="footer-link" onClick={handleFooterLinkClick}>
+                      Careers
+                    </a>
+                  </li>
                 </ul>
               </div>
-              <div className="footer-section">
-              </div>
+              <div className="footer-section"></div>
             </div>
             <div className="footer-bottom">
               <p>Copyright © 2025 StrategiQ. All Rights Reserved.</p>
@@ -215,7 +231,8 @@ export default function LandingPage() {
               </button>
               {isMessageVisible ? (
                 <div className={styles.message}>
-                   Thank you for applying! We're reviewing your profile and will update you once the verification process is complete.                </div>
+                  Thank you for applying! We're reviewing your profile and will update you once the verification process is complete.
+                </div>
               ) : (
                 <>
                   <h2>Login to StrategiQ</h2>
