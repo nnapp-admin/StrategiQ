@@ -1,0 +1,257 @@
+/* MessageCard.module.css */
+.chatSection {
+  background: #1a1a1a;
+  padding: 2rem;
+  border-radius: 10px;
+  border: 1px solid #333;
+  height: auto; /* Dynamic height when chat window is not open */
+}
+
+.chatSection.chatWindowOpen {
+  min-height: calc(700px + 4rem); /* Apply min-height only when chat window is open */
+}
+
+.chatSection h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.chatContent {
+  transition: opacity 0.3s ease;
+}
+
+.chatContent.fadeIn {
+  opacity: 1;
+}
+
+.chatContent.fadeOut {
+  opacity: 0;
+}
+
+.chatList {
+  list-style: none;
+}
+
+.chatItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #333;
+  transition: background 0.3s ease;
+  cursor: pointer;
+}
+
+.chatItem:hover {
+  background: #2a2a2a;
+}
+
+.chatAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #333;
+  margin-right: 1rem;
+}
+
+.chatInfo {
+  flex: 1;
+}
+
+.nameWithStatus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chatInfo h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.chatInfo p {
+  font-size: 0.9rem;
+  color: #cccccc;
+  margin-top: 0.25rem;
+}
+
+.chatTime {
+  font-size: 0.8rem;
+  color: #888;
+  line-height: 1;
+  align-self: center;
+}
+
+.statusIndicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.statusIndicator.online {
+  background: #00ff00;
+  box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+}
+
+.statusIndicator.offline {
+  background: #888;
+}
+
+/* Chat Window Styles */
+.chatWindow {
+  display: flex;
+  flex-direction: column;
+  height: 1000px; /* Increased height for larger screens */
+  background: #2a2a2a;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.chatHeader {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: #333;
+  border-bottom: 1px solid #444;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+
+.backButton:hover {
+  color: #cccccc;
+}
+
+.chatHeader h4 {
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin: 0;
+}
+
+.messageList {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.message {
+  display: flex;
+  max-width: 70%;
+  margin-bottom: 0.5rem;
+}
+
+.message.sent {
+  align-self: flex-end;
+}
+
+.message.received {
+  align-self: flex-start;
+}
+
+.messageContent {
+  padding: 0.8rem;
+  border-radius: 10px;
+  background: #3a3a3a;
+}
+
+.message.sent .messageContent {
+  background: #00205c2d;
+  color: #ffffff;
+}
+
+.message.received .messageContent {
+  background: #55555552;
+  color: #ffffff;
+}
+
+.messageContent p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.messageTime {
+  font-size: 0.7rem;
+  color: #cccccc;
+  margin-top: 0.2rem;
+  display: block;
+  text-align: right;
+}
+
+.messageForm {
+  display: flex;
+  padding: 1rem;
+  border-top: 1px solid #444;
+  background: #333;
+}
+
+.messageInput {
+  flex: 1;
+  padding: 0.8rem;
+  border: 1px solid #444;
+  border-radius: 5px;
+  background: #2a2a2a;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.sendButton {
+  background: #000cb6;
+  color: #ffffff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.sendButton:hover {
+  background: #a30000;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .chatSection {
+    padding: 1rem;
+    height: auto; /* Dynamic height for mobile when chat window is not open */
+  }
+
+  .chatSection.chatWindowOpen {
+    min-height: calc(600px + 2rem); /* Apply min-height only when chat window is open */
+  }
+
+  .chatItem {
+    padding: 0.8rem;
+  }
+
+  .chatWindow {
+    height: 700px; /* Increased height for mobile screens */
+  }
+
+  .messageInput {
+    padding: 0.6rem;
+  }
+
+  .sendButton {
+    padding: 0.6rem 1rem;
+  }
+
+  .chatTime {
+    font-size: 0.7rem;
+  }
+}
