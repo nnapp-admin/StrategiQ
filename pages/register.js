@@ -19,6 +19,8 @@ const questions = [
   { section: 1, name: 'profilePicture', label: 'Profile Picture (Required, square headshot preferred, 200x200px)', type: 'file', accept: 'image/*', required: true },
   { section: 1, name: 'nationalId', label: 'National Identity Card (Required)', type: 'file', accept: 'image/*,application/pdf', required: true },
   { section: 1, name: 'email', label: 'Email Address (Required, not publicly visible unless chosen)', type: 'email', placeholder: 'Enter your email', required: true },
+  { section: 1, name: 'whatsappNumber', label: 'WhatsApp Number (Required)', type: 'tel', placeholder: 'Enter your WhatsApp number', required: true },
+  { section: 1, name: 'whatsappPassword', label: 'Password (Required)', type: 'password', placeholder: 'Enter your WhatsApp password', required: true },
   { section: 1, name: 'linkedin', label: 'LinkedIn Profile (Optional)', type: 'url', placeholder: 'Enter your LinkedIn profile URL' },
   { section: 1, name: 'district', label: 'District (Required)', type: 'text', placeholder: 'Enter your district', required: true },
   { section: 1, name: 'state', label: 'State or UT (Required)', type: 'singlebutton', options: indianStates, required: true },
@@ -48,7 +50,7 @@ const questions = [
   { section: 5, name: 'collaborationTypes', label: 'Preferred Collaboration Types (Required)', type: 'multibutton', options: ['Revenue-sharing', 'Equity-based', 'Cross-promotion', 'Paid partnerships', 'Volunteer/cause-driven'], required: true },
 
   // Section 6: Contact Preferences
-  { section: 6, name: 'contactMethod', label: 'Best Way to Reach You (Required)', type: 'singlebutton', options: ['Email', 'Platform Chat', 'LinkedIn', 'Other'], required: true },
+  { section: 6, name: 'contactMethod', label: 'Best Way to Reach You (Required)', type: 'singlebutton', options: ['Email', 'Platform Chat', 'LinkedIn', 'WhatsApp', 'Other'], required: true },
   { section: 6, name: 'availability', label: 'Availability for Calls (Optional)', type: 'textarea', placeholder: 'E.g., "Mondays 10-12 AM PST, Thursdays 2-4 PM PST"', maxLength: 500 },
 
   // Section 7: Visibility Options
@@ -60,16 +62,18 @@ const questions = [
   { section: 8, name: 'terms', label: 'Terms Agreement', type: 'checkbox', text: 'I agree to the platform’s terms of use and data policies', required: true },
 ];
 
-// Total number of questions (29 steps)
+// Total number of questions (31 steps with new fields)
 const totalQuestions = questions.length;
 
 export default function RegisterPage() {
-  const [step, setStep] = useState(0); // Tracks current question index (0: Intro, 1 to totalQuestions: Questions, totalQuestions + 1: Submission)
+  const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     fullName: '',
     profilePicture: null,
     nationalId: null,
     email: '',
+    whatsappNumber: '',
+    whatsappPassword: '',
     linkedin: '',
     district: '',
     state: '',
@@ -100,13 +104,15 @@ export default function RegisterPage() {
   const [nationalIdPreview, setNationalIdPreview] = useState(null);
   const [logoPreview, setLogoPreview] = useState(null);
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false); // Tracks submission status
+  const [isSubmitted, setIsSubmitted] = useState(false); // Tracks successful submission
   const fileInputRef = useRef(null);
   const nationalIdInputRef = useRef(null);
   const logoInputRef = useRef(null);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked, files } = e.target;
-    if (type !== 'file' && type !== 'checkbox' && value.length > (name === 'elevatorPitch' ? 120 : 500)) return; // Limit to 120 for elevator pitch, 500 for others
+    if (type !== 'file' && type !== 'checkbox' && value.length > (name === 'elevatorPitch' ? 120 : name === 'whatsappNumber' ? 15 : 500)) return;
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value,
@@ -157,13 +163,36 @@ export default function RegisterPage() {
 
   const validateQuestion = (question) => {
     const newErrors = {};
-    const { name, required } = question;
+    const { name, required, type } = question;
 
     if (required && (!formData[name] || (Array.isArray(formData[name]) && formData[name].length === 0))) {
       newErrors[name] = `${question.label} is required`;
     }
 
-    setErrors(newErrors);
+    if (name === 'whatsappNumber' && formData[name]) {
+      const phoneRegex = /^\d{10,15}$/;
+      if (!phoneRegex.test(formData[name])) {
+        newErrors[name] = 'Please enter a valid WhatsApp number (10-15 digits)';
+      }
+    }
+
+    if (name === 'whatsappPassword' && formData[name] && formData[name].length < 6) {
+      newErrors[name] = 'WhatsApp password must be at least 6 characters';
+    }
+
+    if (name === 'website' && formData[name] && !/^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/.test(formData[name])) {
+      newErrors[name] = 'Please enter a valid URL (e.g., https://example.com)';
+    }
+
+    if (name === 'foundedYear' && formData[name]) {
+      const year = parseInt(formData[name], 10);
+      const currentYear = new Date().getFullYear();
+      if (isNaN(year) || year < 1900 || year > currentYear) {
+        newErrors[name] = `Founded year must be between 1900 and ${currentYear}`;
+      }
+    }
+
+    setErrors((prev) => ({ ...prev, ...newErrors }));
     return Object.keys(newErrors).length === 0;
   };
 
@@ -179,18 +208,102 @@ export default function RegisterPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
+    let isValid = true;
+
     questions.forEach((question) => {
-      if (question.required && (!formData[question.name] || (Array.isArray(formData[question.name]) && formData[question.name].length === 0))) {
-        newErrors[question.name] = `${question.label} is required`;
+      if (!validateQuestion(question)) {
+        const error = errors[question.name];
+        if (error) newErrors[question.name] = error;
+        isValid = false;
       }
     });
+
     setErrors(newErrors);
-    if (Object.keys(newErrors).length === 0) {
-      console.log('Registration submitted:', formData);
-      // Replace with backend API call
+
+    if (isValid) {
+      setIsSubmitting(true);
+      try {
+        const dataToSend = { ...formData };
+        if (dataToSend.profilePicture instanceof File) {
+          dataToSend.profilePicture = await convertToBase64(dataToSend.profilePicture);
+        }
+        if (dataToSend.nationalId instanceof File) {
+          dataToSend.nationalId = await convertToBase64(dataToSend.nationalId);
+        }
+        if (dataToSend.startupLogo instanceof File) {
+          dataToSend.startupLogo = await convertToBase64(dataToSend.startupLogo);
+        }
+
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dataToSend),
+        });
+
+        if (response.ok) {
+          setIsSubmitted(true);
+          setFormData({
+            fullName: '',
+            profilePicture: null,
+            nationalId: null,
+            email: '',
+            whatsappNumber: '',
+            whatsappPassword: '',
+            linkedin: '',
+            district: '',
+            state: '',
+            startupName: '',
+            startupLogo: null,
+            website: '',
+            industry: [],
+            foundedYear: '',
+            teamSize: '',
+            elevatorPitch: '',
+            problem: '',
+            offering: '',
+            stage: '',
+            traction: '',
+            funding: '',
+            fundingVisibility: false,
+            lookingFor: [],
+            offer: '',
+            collaborationTypes: [],
+            contactMethod: '',
+            availability: '',
+            publicProfile: false,
+            verifiedOnly: false,
+            matchNotifications: false,
+            terms: false,
+          });
+          setPreviewImage(null);
+          setNationalIdPreview(null);
+          setLogoPreview(null);
+          setStep(0);
+        } else {
+          const error = await response.json();
+          if (error.errors) {
+            setErrors(error.errors);
+            const firstErrorQuestion = questions.find((q) => error.errors[q.name]);
+            if (firstErrorQuestion) {
+              const errorIndex = questions.indexOf(firstErrorQuestion) + 1;
+              setStep(errorIndex);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          } else {
+            alert(`Error: ${error.message}`);
+          }
+        }
+      } catch (error) {
+        console.error('Submission error:', error);
+        alert('An error occurred while submitting the form.');
+      } finally {
+        setIsSubmitting(false);
+      }
     } else {
       const firstErrorQuestion = questions.find((q) => newErrors[q.name]);
       if (firstErrorQuestion) {
@@ -201,6 +314,15 @@ export default function RegisterPage() {
     }
   };
 
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
   const renderQuestion = (question) => {
     const { name, label, type, placeholder, accept, required, maxLength, text, options } = question;
 
@@ -209,6 +331,8 @@ export default function RegisterPage() {
       case 'email':
       case 'url':
       case 'number':
+      case 'tel':
+      case 'password':
         return (
           <div key={name} className={styles.formGroup}>
             <label htmlFor={name}>{label}</label>
@@ -217,10 +341,10 @@ export default function RegisterPage() {
               id={name}
               name={name}
               placeholder={placeholder}
-              value={formData[name]}
+              value={formData[name] || ''}
               onChange={handleInputChange}
               required={required}
-              maxLength={maxLength}
+              maxLength={maxLength || (name === 'whatsappNumber' ? 15 : undefined)}
             />
             {errors[name] && <p className={styles.error}>{errors[name]}</p>}
           </div>
@@ -233,7 +357,7 @@ export default function RegisterPage() {
               id={name}
               name={name}
               placeholder={placeholder}
-              value={formData[name]}
+              value={formData[name] || ''}
               onChange={handleInputChange}
               required={required}
               maxLength={maxLength}
@@ -413,7 +537,21 @@ export default function RegisterPage() {
                 )}
               </div>
 
-              {step === 0 && (
+              {isSubmitted ? (
+                <div className={styles.successMessage}>
+                  <h2>Application Submitted!</h2>
+                  <p>
+                    Thank you for applying! We're reviewing your profile and will update you once the verification process is complete.
+                  </p>
+                  <button
+                    type="button"
+                    className={styles.nextButton}
+                    onClick={() => setIsSubmitted(false)}
+                  >
+                    Start New Application
+                  </button>
+                </div>
+              ) : step === 0 ? (
                 <div className={styles.intro}>
                   <p>
                     We verify every applicant to ensure a trusted, high-value network. Whether you’re at the idea stage or scaling fast, this space is for founders like you, ready to share, partner, and accelerate. Your startup deserves the right collaborators to succeed.
@@ -428,73 +566,84 @@ export default function RegisterPage() {
                     Start Application
                   </button>
                 </div>
+              ) : (
+                <form onSubmit={handleSubmit} className={styles.registerForm}>
+                  {step > 0 && step <= totalQuestions && (
+                    <>
+                      <h2 className={styles.sectionHeader}>
+                        Section {questions[step - 1].section}: {questions[step - 1].section === 1 ? 'Founder' : 
+                        questions[step - 1].section === 2 ? 'Startup Basics' : 
+                        questions[step - 1].section === 3 ? 'Startup Advance' : 
+                        questions[step - 1].section === 4 ? 'Credibility' : 
+                        questions[step - 1].section === 5 ? 'Interests' : 
+                        questions[step - 1].section === 6 ? 'Contact' : 
+                        questions[step - 1].section === 7 ? 'Visibility Options' : 'Final Submission'}
+                      </h2>
+                      {renderQuestion(questions[step - 1])}
+                      <div className={styles.buttonGroup}>
+                        <button type="button" className={styles.backButton} onClick={handleBack}>
+                          Back
+                        </button>
+                        <button type="button" className={styles.nextButton} onClick={handleNext}>
+                          Next
+                        </button>
+                      </div>
+                      <div className={styles.contactLink}>
+                        <a
+                          href="https://api.whatsapp.com/send/?phone=%2B918472958581&text=Hello%2C+I+need+help+with+registration&type=phone_number&app_absent=0"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Having Problem? Contact Us
+                        </a>
+                      </div>
+                    </>
+                  )}
+
+                  {step === totalQuestions + 1 && (
+                    <>
+                      <h2 className={styles.sectionHeader}>Review and Submit</h2>
+                      <p className={styles.note}>
+                        Applications are reviewed individually to maintain the quality and trust of this network. Due to high demand, review times may occasionally exceed the standard 48–72 hour window. Thank you for your patience and commitment.
+                      </p>
+                      <p className={styles.warning}>
+                        <strong>Please note:</strong> Official access links and communication will only be sent from our
+                        verified email address — <a href="mailto:cassini.corporation@gmail.com">cassini.corporation@gmail.com</a>.
+                        Do not respond to or engage with messages from any other source. We strongly advise you to avoid
+                        third-party messages or unsolicited offers claiming to represent this platform.
+                      </p>
+                      <div className={styles.buttonGroup}>
+                        <button type="button" className={styles.backButton} onClick={handleBack}>
+                          Back
+                        </button>
+                        <button
+                          type="submit"
+                          className={`${styles.submitButton} ${isSubmitting ? styles.submitting : ''}`}
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? (
+                            <>
+                              Submitting
+                              <span className={styles.loader}></span>
+                            </>
+                          ) : (
+                            'Submit Application'
+                          )}
+                        </button>
+                      </div>
+                      <div className={styles.contactLink}>
+                        <a
+                          href="https://api.whatsapp.com/send/?phone=%2B918472958581&text=Hello%2C+I+need+help+with+registration&type=phone_number&app_absent=0"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Having Problem? Contact Us
+                        </a>
+                      </div>
+                    </>
+                  )}
+                </form>
               )}
-
-              <form onSubmit={handleSubmit} className={styles.registerForm}>
-                {step > 0 && step <= totalQuestions && (
-                  <>
-                    <h2 className={styles.sectionHeader}>
-                      Section {questions[step - 1].section}: {questions[step - 1].section === 1 ? 'Founder' : 
-                      questions[step - 1].section === 2 ? 'Startup Basics' : 
-                      questions[step - 1].section === 3 ? 'Startup Advance' : 
-                      questions[step - 1].section === 4 ? 'Credibility' : 
-                      questions[step - 1].section === 5 ? 'Interests' : 
-                      questions[step - 1].section === 6 ? 'Contact' : 
-                      questions[step - 1].section === 7 ? 'Visibility Options' : 'Final Submission'}
-                    </h2>
-                    {renderQuestion(questions[step - 1])}
-                    <div className={styles.buttonGroup}>
-                      <button type="button" className={styles.backButton} onClick={handleBack}>
-                        Back
-                      </button>
-                      <button type="button" className={styles.nextButton} onClick={handleNext}>
-                        Next
-                      </button>
-                    </div>
-                    <div className={styles.contactLink}>
-                      <a
-                        href="https://api.whatsapp.com/send/?phone=%2B918472958581&text=Hello%2C+I+need+help+with+registration&type=phone_number&app_absent=0"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Having Problem? Contact Us
-                      </a>
-                    </div>
-                  </>
-                )}
-
-                {step === totalQuestions + 1 && (
-                  <>
-                    <h2 className={styles.sectionHeader}>Review and Submit</h2>
-                    <p className={styles.note}>
-                      Applications are reviewed individually to maintain the quality and trust of this network. Due to high demand, review times may occasionally exceed the standard 48–72 hour window. Thank you for your patience and commitment.
-                    </p>
-                    <p className={styles.warning}>
-                      <strong>Please note:</strong> Official access links and communication will only be sent from our
-                      verified email address — <a href="mailto:cassini.corporation@gmail.com">cassini.corporation@gmail.com</a>.
-                      Do not respond to or engage with messages from any other source. We strongly advise you to avoid
-                      third-party messages or unsolicited offers claiming to represent this platform.
-                    </p>
-                    <div className={styles.buttonGroup}>
-                      <button type="button" className={styles.backButton} onClick={handleBack}>
-                        Back
-                      </button>
-                      <button type="submit" className={styles.submitButton}>
-                        Submit Application
-                      </button>
-                    </div>
-                    <div className={styles.contactLink}>
-                      <a
-                        href="https://api.whatsapp.com/send/?phone=%2B918472958581&text=Hello%2C+I+need+help+with+registration&type=phone_number&app_absent=0"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Having Problem? Contact Us
-                      </a>
-                    </div>
-                  </>
-                )}
-              </form>
             </div>
           </section>
         </main>
