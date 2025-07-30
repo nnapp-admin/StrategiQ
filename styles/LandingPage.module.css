@@ -12,6 +12,22 @@
   backdrop-filter: blur(5px);
 }
 
+
+  .loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  background: #0a0a0a;
+  overflow: hidden;
+}
+
+.loadingAnimation {
+  width: 100px;
+  height: 100px;
+}
+
 .modal {
   background: #1a1a1a;
   border-radius: 15px;
@@ -146,23 +162,4 @@ footer .container {
     height: auto;
   }
 
-  .loadingContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  width: 100%;
-  max-width: 100vw;
-  background: #0a0a0a;
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 2000;
-}
-
-.loadingAnimation {
-  width: 200px;
-  height: 200px;
-}
 }

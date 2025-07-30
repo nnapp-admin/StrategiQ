@@ -15,42 +15,60 @@ export default function LandingPage() {
 
   useEffect(() => {
     const loadAssets = async () => {
+      const startTime = Date.now();
       try {
-        // List of all assets to preload
-        const assetPromises = [
-          fetch('/assets/world.json'),
-          fetch('/assets/Loading.json'),
-          ...[
-            '1.png',
-            '2.png',
-            '3.svg',
-            '4.svg',
-            '5.png',
-            '6.png',
-            '7.svg',
-            '8.png',
-            '9.png',
-            '10.png',
-            '11.png',
-            'Logo.png',
-            'Faces.png',
-          ].map((img) => fetch(`/assets/${img}`)),
+        // Fetch world.json
+        const worldResponse = await fetch('/assets/world.json');
+        if (!worldResponse.ok) throw new Error('Failed to load world.json');
+        const worldData = await worldResponse.json();
+
+        // Fetch Loading.json
+        const loadingResponse = await fetch('/assets/Loading.json');
+        if (!loadingResponse.ok) throw new Error('Failed to load Loading.json');
+        const loadingData = await loadingResponse.json();
+
+        // Preload images
+        const images = [
+          '/assets/Logo.png',
+          '/assets/Faces.png',
+          '/assets/1.png',
+          '/assets/2.png',
+          '/assets/3.svg',
+          '/assets/4.svg',
+          '/assets/5.png',
+          '/assets/6.png',
+          '/assets/7.svg',
+          '/assets/8.png',
+          '/assets/9.png',
+          '/assets/10.png',
+          '/assets/11.png',
         ];
 
-        // Fetch all assets in parallel
-        const responses = await Promise.all(assetPromises);
+        const imagePromises = images.map(
+          (src) =>
+            new Promise((resolve, reject) => {
+              const img = new Image();
+              img.src = src;
+              img.onload = resolve;
+              img.onerror = () => reject(new Error(`Failed to load image: ${src}`));
+            })
+        );
 
-        // Check if all responses are OK
-        if (responses.every((res) => res.ok)) {
-          const [worldData, loadingData, ...imageResponses] = responses;
-          setAnimationData(await worldData.json());
-          setLoadingAnimationData(await loadingData.json());
-          // Image responses are not parsed as JSON; just ensure they are fetched
-        } else {
-          console.error('Failed to load one or more assets');
+        // Wait for all images to load
+        await Promise.all(imagePromises);
+
+        // Set animation data
+        setAnimationData(worldData);
+        setLoadingAnimationData(loadingData);
+
+        // Ensure minimum 3-second loading time
+        const elapsedTime = Date.now() - startTime;
+        const remainingTime = 3000 - elapsedTime;
+        if (remainingTime > 0) {
+          await new Promise((resolve) => setTimeout(resolve, remainingTime));
         }
       } catch (error) {
-        console.error('Error fetching assets:', error);
+        console.error('Error loading assets:', error);
       } finally {
         setIsLoading(false);
       }
@@ -60,7 +78,7 @@ export default function LandingPage() {
   }, []);
 
   useEffect(() => {
-    if (isLoading) return; // Skip effects until loading is complete
+    if (isLoading) return;
 
     const observerOptions = {
       threshold: 0.05,
@@ -251,14 +269,16 @@ export default function LandingPage() {
     },
   ];
 
-  if (isLoading || !loadingAnimationData) {
+  if (isLoading) {
     return (
       <div className={styles.loadingContainer}>
-        <Lottie
-          animationData={loadingAnimationData}
-          loop={true}
-          className={styles.loadingAnimation}
-        />
+        {loadingAnimationData && (
+          <Lottie
+            animationData={loadingAnimationData}
+            loop={true}
+            className={styles.loadingAnimation}
+          />
+        )}
       </div>
     );
   }
@@ -278,20 +298,13 @@ export default function LandingPage() {
           href="https://fonts.googleapis.com/css2?family=Helvetica:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
-        <script
-          src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.9.6/lottie.min.js"
-          async
-        />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.9.6/lottie.min.js" async />
       </Head>
       <div className="page-wrapper">
         <header>
           <nav className="container">
             <a href="#" className="logo">
-              <img
-                src="/assets/Logo.png"
-                alt="StartupSync Logo"
-                className="logo-image"
-              />
+              <img src="/assets/Logo.png" alt="StartupSync Logo" className="logo-image" />
               FounderCult
             </a>
           </nav>
@@ -304,46 +317,34 @@ export default function LandingPage() {
                 <div className="hero-text">
                   <h1>Turn Startup Chaos into a Clear Game Plan ♘</h1>
                   <p>
-                    Your complete startup command center. All the tools, services,
-                    and connections startup founders need — to build smarter, move
-                    faster, and grow together.
+                    Your complete startup command center. All the tools, services, and connections startup founders need — to build smarter, move faster, and grow together.
                   </p>
                   <div className="hero-buttons">
                     <button className="cta-button" onClick={handleJoinClick}>
                       Join
                     </button>
-                    <button
-                      className="secondary-button"
-                      onClick={handleLoginClick}
-                    >
+                    <button className="secondary-button" onClick={handleLoginClick}>
                       Login
                     </button>
                   </div>
                   <div className="hero-checklist">
-                    ✓ Curated founder network ✓ Secure collaboration tools ✓
-                    Partnership-focused
+                    ✓ Curated founder network ✓ Secure collaboration tools ✓ Partnership-focused
                   </div>
                 </div>
                 <div className="hero-visual">
-                  <img
-                    src="/assets/Faces.png"
-                    alt="Startup Collaboration Network"
-                    className="hero-image"
-                  />
+                  <img src="/assets/Faces.png" alt="Startup Collaboration Network" className="hero-image" />
                 </div>
               </div>
             </div>
           </section>
 
           <section className="world-image-section scroll-reveal">
-            {animationData ? (
+            {animationData && (
               <Lottie
                 animationData={animationData}
                 loop={true}
                 className="world-animation"
               />
-            ) : (
-              <div></div>
             )}
           </section>
 
@@ -353,24 +354,13 @@ export default function LandingPage() {
               <div className="services-content">
                 {services.map((service, index) => (
                   <div className="service-item" key={index}>
-                    <div
-                      className="service-header"
-                      onClick={() => toggleService(index)}
-                    >
+                    <div className="service-header" onClick={() => toggleService(index)}>
                       <h3>{service.title}</h3>
-                      <span
-                        className={`toggle-icon ${
-                          expandedServices[index] ? 'expanded' : ''
-                        }`}
-                      >
+                      <span className={`toggle-icon ${expandedServices[index] ? 'expanded' : ''}`}>
                         ▼
                       </span>
                     </div>
-                    <div
-                      className={`service-content ${
-                        expandedServices[index] ? 'expanded' : ''
-                      }`}
-                    >
+                    <div className={`service-content ${expandedServices[index] ? 'expanded' : ''}`}>
                       <ul>
                         {service.items.map((item, i) => (
                           <li key={i}>{item}</li>
@@ -387,56 +377,16 @@ export default function LandingPage() {
             <div className="container">
               <div className="cta-content">
                 <h2>Don't miss the Train!</h2>
-                <p>
-                  Join a verified network of startup founders from around the
-                  world and start collaborating on partnerships that drive growth.
-                </p>
+                <p>Join a verified network of startup founders from around the world and start collaborating on partnerships that drive growth.</p>
                 <div className="image-carousel">
-                  {[
-                    '1.png',
-                    '2.png',
-                    '3.svg',
-                    '4.svg',
-                    '5.png',
-                    '6.png',
-                    '7.svg',
-                    '8.png',
-                    '9.png',
-                    '10.png',
-                    '11.png',
-                  ].map((img, index) => (
-                    <img
-                      key={index}
-                      src={`/assets/${img}`}
-                      alt={`Carousel image ${index + 1}`}
-                      className="carousel-image"
-                    />
+                  {['1.png', '2.png', '3.svg', '4.svg', '5.png', '6.png', '7.svg', '8.png', '9.png', '10.png', '11.png'].map((img, index) => (
+                    <img key={index} src={`/assets/${img}`} alt={`Carousel image ${index + 1}`} className="carousel-image" />
                   ))}
-                  {[
-                    '1.png',
-                    '2.png',
-                    '3.svg',
-                    '4.svg',
-                    '5.png',
-                    '6.png',
-                    '7.svg',
-                    '8.png',
-                    '9.png',
-                    '10.png',
-                    '11.png',
-                  ].map((img, index) => (
-                    <img
-                      key={`dup-${index}`}
-                      src={`/assets/${img}`}
-                      alt={`Carousel image ${index + 1}`}
-                      className="carousel-image"
-                    />
+                  {['1.png', '2.png', '3.svg', '4.svg', '5.png', '6.png', '7.svg', '8.png', '9.png', '10.png', '11.png'].map((img, index) => (
+                    <img key={`dup-${index}`} src={`/assets/${img}`} alt={`Carousel image ${index + 1}`} className="carousel-image" />
                   ))}
                 </div>
-                <button
-                  className="cta-button cta-button-large"
-                  onClick={handleJoinClick}
-                >
+                <button className="cta-button cta-button-large" onClick={handleJoinClick}>
                   Start Your Application
                 </button>
               </div>
@@ -453,38 +403,22 @@ export default function LandingPage() {
                 <h3>Company</h3>
                 <ul>
                   <li>
-                    <a
-                      href="/About"
-                      className="footer-link"
-                      onClick={handleFooterLinkClick}
-                    >
+                    <a href="/About" className="footer-link" onClick={handleFooterLinkClick}>
                       About Us
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="/About"
-                      className="footer-link"
-                      onClick={handleFooterLinkClick}
-                    >
+                    <a href="/About" className="footer-link" onClick={handleFooterLinkClick}>
                       Privacy Policy
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="/About"
-                      className="footer-link"
-                      onClick={handleFooterLinkClick}
-                    >
+                    <a href="/About" className="footer-link" onClick={handleFooterLinkClick}>
                       Terms of Service
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="/About"
-                      className="footer-link"
-                      onClick={handleFooterLinkClick}
-                    >
+                    <a href="/About" className="footer-link" onClick={handleFooterLinkClick}>
                       Careers
                     </a>
                   </li>
@@ -506,8 +440,7 @@ export default function LandingPage() {
               </button>
               {isMessageVisible ? (
                 <div className={styles.message}>
-                  Thank you for applying! We're reviewing your profile and will
-                  update you once the verification process is complete.
+                  Thank you for applying! We're reviewing your profile and will update you once the verification process is complete.
                 </div>
               ) : (
                 <>
