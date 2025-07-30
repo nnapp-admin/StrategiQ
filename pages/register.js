@@ -15,54 +15,47 @@ const indianStates = [
 // Define questions for each section
 const questions = [
   // Section 1: Founder Details
-  { section: 1, name: 'fullName', label: 'Full Name (Founder/Co-Founder) (Required)', type: 'text', placeholder: 'Enter your full name', required: true },
-  { section: 1, name: 'profilePicture', label: 'Profile Picture (Required, square headshot preferred, 200x200px)', type: 'file', accept: 'image/*', required: true },
-  { section: 1, name: 'nationalId', label: 'National Identity Card (Required)', type: 'file', accept: 'image/*,application/pdf', required: true },
-  { section: 1, name: 'email', label: 'Email Address (Required, not publicly visible unless chosen)', type: 'email', placeholder: 'Enter your email', required: true },
-  { section: 1, name: 'whatsappNumber', label: 'WhatsApp Number (Required)', type: 'tel', placeholder: 'Enter your WhatsApp number', required: true },
-  { section: 1, name: 'whatsappPassword', label: 'Password (Required)', type: 'password', placeholder: 'Enter your WhatsApp password', required: true },
+  { section: 1, name: 'fullName', label: 'Full Name (Founder/Co-Founder)*', type: 'text', placeholder: 'Enter your full name', required: true },
+  { section: 1, name: 'profilePicture', label: 'Profile Picture* (square headshot preferred, 200x200px, max 200KB)', type: 'file', accept: 'image/*', required: true },
+  { section: 1, name: 'nationalId', label: 'National Identity Card* (max 200KB)', type: 'file', accept: 'image/*', required: true },
+  { section: 1, name: 'email', label: 'Email Address* (not publicly visible unless chosen)', type: 'email', placeholder: 'Enter your email', required: true },
+  { section: 1, name: 'whatsappNumber', label: 'WhatsApp Number*', type: 'tel', placeholder: 'Enter your WhatsApp number', required: true },
+  { section: 1, name: 'whatsappPassword', label: 'Password*', type: 'password', placeholder: 'Enter your WhatsApp password', required: true },
   { section: 1, name: 'linkedin', label: 'LinkedIn Profile (Optional)', type: 'url', placeholder: 'Enter your LinkedIn profile URL' },
-  { section: 1, name: 'district', label: 'District (Required)', type: 'text', placeholder: 'Enter your district', required: true },
-  { section: 1, name: 'state', label: 'State or UT (Required)', type: 'singlebutton', options: indianStates, required: true },
+  { section: 1, name: 'district', label: 'District*', type: 'text', placeholder: 'Enter your district', required: true },
+  { section: 1, name: 'state', label: 'State or UT*', type: 'singlebutton', options: indianStates, required: true },
   
   // Section 2: Startup Basics
-  { section: 2, name: 'startupName', label: 'Startup Name (Required)', type: 'text', placeholder: 'Enter your startup’s name', required: true },
-  { section: 2, name: 'startupLogo', label: 'Startup Logo (Optional, square logo preferred)', type: 'file', accept: 'image/*' },
+  { section: 2, name: 'startupName', label: 'Startup Name*', type: 'text', placeholder: 'Enter your startup’s name', required: true },
+  { section: 2, name: 'startupLogo', label: 'Startup Logo (Optional, square logo preferred, max 200KB)', type: 'file', accept: 'image/*' },
   { section: 2, name: 'website', label: 'Website URL (Optional)', type: 'url', placeholder: 'Enter your startup’s website' },
-  { section: 2, name: 'industry', label: 'Startup Industry (Required)', type: 'multibutton', options: ['Fintech', 'HealthTech', 'SaaS', 'D2C', 'Web3', 'EdTech', 'Other'], required: true },
-  { section: 2, name: 'foundedYear', label: 'Founded Year (Required)', type: 'number', placeholder: 'Enter founding year (e.g., 2023)', required: true },
-  { section: 2, name: 'teamSize', label: 'Team Size (Required)', type: 'singlebutton', options: ['1–5', '6–10', '11–50', '50+'], required: true },
+  { section: 2, name: 'industry', label: 'Startup Industry*', type: 'multibutton', options: ['Fintech', 'HealthTech', 'SaaS', 'D2C', 'Web3', 'EdTech', 'Other'], required: true },
+  { section: 2, name: 'foundedYear', label: 'Founded Year*', type: 'number', placeholder: 'Enter founding year (e.g., 2023)', required: true },
+  { section: 2, name: 'teamSize', label: 'Team Size*', type: 'singlebutton', options: ['1–5', '6–10', '11–50', '50+'], required: true },
 
   // Section 3: What Does Your Startup Do?
-  { section: 3, name: 'elevatorPitch', label: 'One-liner Elevator Pitch (Required)', type: 'text', placeholder: 'E.g., "AI-powered health companion for chronic disease prevention"', required: true, maxLength: 120 },
-  { section: 3, name: 'problem', label: 'Problem You’re Solving (Required)', type: 'textarea', placeholder: 'Describe the problem your startup addresses', required: true, maxLength: 500 },
-  { section: 3, name: 'offering', label: 'Core Offering / Product Description (Required)', type: 'textarea', placeholder: 'What does your startup provide?', required: true, maxLength: 500 },
+  { section: 3, name: 'elevatorPitch', label: 'One-liner Elevator Pitch*', type: 'text', placeholder: 'E.g., "AI-powered health companion for chronic disease prevention"', required: true, maxLength: 120 },
+  { section: 3, name: 'problem', label: 'Problem You’re Solving*', type: 'textarea', placeholder: 'Describe the problem your startup addresses', required: true, maxLength: 500 },
+  { section: 3, name: 'offering', label: 'Core Offering / Product Description*', type: 'textarea', placeholder: 'What does your startup provide?', required: true, maxLength: 500 },
 
   // Section 4: Traction & Credibility
-  { section: 4, name: 'stage', label: 'Stage of Startup (Required)', type: 'singlebutton', options: ['Idea', 'MVP', 'Early Revenue', 'Scaling', 'Funded', 'Acquired'], required: true },
-  { section: 4, name: 'traction', label: 'Traction Highlights (Required)', type: 'textarea', placeholder: 'E.g., "10K users", "Raised $100K Pre-Seed", "Partnered with XYZ"', required: true, maxLength: 500 },
+  { section: 4, name: 'stage', label: 'Stage of Startup*', type: 'singlebutton', options: ['Idea', 'MVP', 'Early Revenue', 'Scaling', 'Funded', 'Acquired'], required: true },
+  { section: 4, name: 'traction', label: 'Traction Highlights*', type: 'textarea', placeholder: 'E.g., "10K users", "Raised $100K Pre-Seed", "Partnered with XYZ"', required: true, maxLength: 500 },
   { section: 4, name: 'funding', label: 'Funding Raised (Optional)', type: 'text', placeholder: 'E.g., $100K Pre-Seed' },
   { section: 4, name: 'fundingVisibility', label: 'Show Funding Publicly?', type: 'checkbox', text: 'Make funding details visible in public directory' },
 
   // Section 5: Partnership & Collaboration Interests
-  { section: 5, name: 'lookingFor', label: 'Looking For (Required, select all that apply)', type: 'multibutton', options: ['Co-marketing partners', 'Tech integrations', 'Resellers / channel partners', 'Pilot users', 'Talent exchange', 'Service bartering', 'Investment / Strategic partnerships', 'Mentorship / Advisory', 'Other'], required: true },
-  { section: 5, name: 'offer', label: 'What You Offer to Others (Required)', type: 'textarea', placeholder: 'E.g., "API access, joint webinars, or white-label design support"', required: true, maxLength: 500 },
-  { section: 5, name: 'collaborationTypes', label: 'Preferred Collaboration Types (Required)', type: 'multibutton', options: ['Revenue-sharing', 'Equity-based', 'Cross-promotion', 'Paid partnerships', 'Volunteer/cause-driven'], required: true },
+  { section: 5, name: 'lookingFor', label: 'Looking For* (select all that apply)', type: 'multibutton', options: ['Co-marketing partners', 'Tech integrations', 'Resellers / channel partners', 'Pilot users', 'Talent exchange', 'Service bartering', 'Investment / Strategic partnerships', 'Mentorship / Advisory', 'Other'], required: true },
+  { section: 5, name: 'offer', label: 'What You Offer to Others*', type: 'textarea', placeholder: 'E.g., "API access, joint webinars, or white-label design support"', required: true, maxLength: 500 },
+  { section: 5, name: 'collaborationTypes', label: 'Preferred Collaboration Types*', type: 'multibutton', options: ['Revenue-sharing', 'Equity-based', 'Cross-promotion', 'Paid partnerships', 'Volunteer/cause-driven'], required: true },
 
-  // Section 6: Contact Preferences
-  { section: 6, name: 'contactMethod', label: 'Best Way to Reach You (Required)', type: 'singlebutton', options: ['Email', 'Platform Chat', 'LinkedIn', 'WhatsApp', 'Other'], required: true },
-  { section: 6, name: 'availability', label: 'Availability for Calls (Optional)', type: 'textarea', placeholder: 'E.g., "Mondays 10-12 AM PST, Thursdays 2-4 PM PST"', maxLength: 500 },
+  // Section 6: Visibility Options
+  { section: 6, name: 'publicProfile', label: 'Profile Visibility', type: 'checkbox', text: 'Make this profile visible in public directory' },
 
-  // Section 7: Visibility Options
-  { section: 7, name: 'publicProfile', label: 'Profile Visibility', type: 'checkbox', text: 'Make this profile visible in public directory' },
-  { section: 7, name: 'verifiedOnly', label: 'Contact Restrictions', type: 'checkbox', text: 'Only allow startups with verified profiles to contact me' },
-  { section: 7, name: 'matchNotifications', label: 'Notifications', type: 'checkbox', text: 'Notify me when I get matched with relevant startups' },
-
-  // Section 8: Final Submission
-  { section: 8, name: 'terms', label: 'Terms Agreement', type: 'checkbox', text: 'I agree to the platform’s terms of use and data policies', required: true },
+  // Section 7: Final Submission
+  { section: 7, name: 'terms', label: 'Terms Agreement*', type: 'checkbox', text: 'I agree to the platform’s terms of use and data policies', required: true },
 ];
 
-// Total number of questions (31 steps with new fields)
 const totalQuestions = questions.length;
 
 export default function RegisterPage() {
@@ -93,19 +86,15 @@ export default function RegisterPage() {
     lookingFor: [],
     offer: '',
     collaborationTypes: [],
-    contactMethod: '',
-    availability: '',
     publicProfile: false,
-    verifiedOnly: false,
-    matchNotifications: false,
     terms: false,
   });
   const [previewImage, setPreviewImage] = useState(null);
   const [nationalIdPreview, setNationalIdPreview] = useState(null);
   const [logoPreview, setLogoPreview] = useState(null);
   const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false); // Tracks submission status
-  const [isSubmitted, setIsSubmitted] = useState(false); // Tracks successful submission
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const fileInputRef = useRef(null);
   const nationalIdInputRef = useRef(null);
   const logoInputRef = useRef(null);
@@ -138,8 +127,22 @@ export default function RegisterPage() {
   const handleImageChange = (e, fieldName) => {
     const file = e.target.files[0];
     const setPreview = fieldName === 'startupLogo' ? setLogoPreview : fieldName === 'nationalId' ? setNationalIdPreview : setPreviewImage;
-    setFormData((prev) => ({ ...prev, [fieldName]: file }));
+    const ref = fieldName === 'startupLogo' ? logoInputRef : fieldName === 'nationalId' ? nationalIdInputRef : fileInputRef;
+
     if (file) {
+      // Check file size (200KB = 204800 bytes)
+      if (file.size > 204800) {
+        setErrors((prev) => ({
+          ...prev,
+          [fieldName]: `File size exceeds 200KB. Please compress the image using this tool: https://www.iloveimg.com/compress-image`,
+        }));
+        if (ref.current) {
+          ref.current.value = ''; // Clear the input
+        }
+        return;
+      }
+
+      setFormData((prev) => ({ ...prev, [fieldName]: file }));
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result);
@@ -147,6 +150,7 @@ export default function RegisterPage() {
       reader.readAsDataURL(file);
     } else {
       setPreview(null);
+      setFormData((prev) => ({ ...prev, [fieldName]: null }));
     }
     setErrors((prev) => ({ ...prev, [fieldName]: '' }));
   };
@@ -166,7 +170,7 @@ export default function RegisterPage() {
     const { name, required, type } = question;
 
     if (required && (!formData[name] || (Array.isArray(formData[name]) && formData[name].length === 0))) {
-      newErrors[name] = `${question.label} is required`;
+      newErrors[name] = 'Answer required to continue';
     }
 
     if (name === 'whatsappNumber' && formData[name]) {
@@ -273,11 +277,7 @@ export default function RegisterPage() {
             lookingFor: [],
             offer: '',
             collaborationTypes: [],
-            contactMethod: '',
-            availability: '',
             publicProfile: false,
-            verifiedOnly: false,
-            matchNotifications: false,
             terms: false,
           });
           setPreviewImage(null);
@@ -433,7 +433,25 @@ export default function RegisterPage() {
                 />
               </div>
             )}
-            {errors[name] && <p className={styles.error}>{errors[name]}</p>}
+            {errors[name] && (
+              <p className={styles.error}>
+                {errors[name].includes('https://www.iloveimg.com/compress-image') ? (
+                  <>
+                    {errors[name].split('https://www.iloveimg.com/compress-image')[0]}
+                    <a
+                      href="https://www.iloveimg.com/compress-image"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.errorLink}
+                    >
+                      https://www.iloveimg.com/compress-image
+                    </a>
+                  </>
+                ) : (
+                  errors[name]
+                )}
+              </p>
+            )}
           </div>
         );
       case 'singlebutton':
@@ -529,11 +547,11 @@ export default function RegisterPage() {
             <div className={styles.container}>
               <div className={styles.progressBar}>
                 {step === 0 ? (
-                  <span>Hey Founder!</span>
+                  <span></span>
                 ) : step <= totalQuestions ? (
                   <span>Step {step} of {totalQuestions}</span>
                 ) : (
-                  <span>Review and Submit</span>
+                  <span></span>
                 )}
               </div>
 
@@ -571,13 +589,12 @@ export default function RegisterPage() {
                   {step > 0 && step <= totalQuestions && (
                     <>
                       <h2 className={styles.sectionHeader}>
-                        Section {questions[step - 1].section}: {questions[step - 1].section === 1 ? 'Founder' : 
+                        Section {questions[step - 1].section}: {questions[step - 1].section === 1 ? 'Founder Details' : 
                         questions[step - 1].section === 2 ? 'Startup Basics' : 
-                        questions[step - 1].section === 3 ? 'Startup Advance' : 
-                        questions[step - 1].section === 4 ? 'Credibility' : 
-                        questions[step - 1].section === 5 ? 'Interests' : 
-                        questions[step - 1].section === 6 ? 'Contact' : 
-                        questions[step - 1].section === 7 ? 'Visibility Options' : 'Final Submission'}
+                        questions[step - 1].section === 3 ? 'What Does Your Startup Do?' : 
+                        questions[step - 1].section === 4 ? 'Traction & Credibility' : 
+                        questions[step - 1].section === 5 ? 'Partnership & Collaboration Interests' : 
+                        questions[step - 1].section === 6 ? 'Visibility Options' : 'Final Submission'}
                       </h2>
                       {renderQuestion(questions[step - 1])}
                       <div className={styles.buttonGroup}>

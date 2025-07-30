@@ -3,14 +3,13 @@ import styles from '../styles/Dashboard.module.css';
 
 const ContinentsDisplay = ({ onContinentClick }) => {
   const continents = [
-    { name: 'Africa', image: '/assets/Africa.jpg' },
-    { name: 'Antarctica', image: '/assets/Antarctica.jpg' },
-    { name: 'Asia', image: '/assets/Asia.jpg' },
-    { name: 'Australia', image: '/assets/Australia.jpg' },
-    { name: 'Europe', image: '/assets/Europe.jpg' },
-    { name: 'North America', image: '/assets/NorthAmerica.jpg' },
-    { name: 'South America', image: '/assets/SouthAmerica.jpg' },
-    { name: 'Add your own', image: '/assets/shop-placeholder.png' },
+    { name: 'Product Development', image: '/assets/Product.jpg' },
+    { name: 'Legal Assistance', image: '/assets/Legal.jpg' },
+    { name: 'Team Hiring', image: '/assets/Hiring.jpg' },
+    { name: 'Investment', image: '/assets/Investement.jpg' },
+    { name: 'Marketing', image: '/assets/Marketing.jpg' },
+    { name: 'Finance & Accounting', image: '/assets/Finance.jpg' },
+    { name: 'Ask my Own', image: '/assets/Ask.jpg' },
   ];
 
   return (

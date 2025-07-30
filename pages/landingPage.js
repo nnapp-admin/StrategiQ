@@ -1,12 +1,35 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import Lottie from 'lottie-react'; // Import Lottie component
 import styles from '../styles/LandingPage.module.css'; // Import CSS module for modal styling
 
 export default function LandingPage() {
   const router = useRouter();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isMessageVisible, setIsMessageVisible] = useState(false);
+  const [animationData, setAnimationData] = useState(null); // State for animation data
+
+  // Fetch animation data if needed (optional, for dynamic loading)
+  useEffect(() => {
+    // If world.json is in public/assets/, you can reference it directly
+    // Lottie component can handle the path directly, so no fetch is strictly needed
+    // This useEffect is a fallback if you need to load JSON dynamically
+    const loadAnimation = async () => {
+      try {
+        const response = await fetch('/assets/world.json');
+        if (response.ok) {
+          const data = await response.json();
+          setAnimationData(data);
+        } else {
+          console.error('Failed to load world.json');
+        }
+      } catch (error) {
+        console.error('Error fetching animation:', error);
+      }
+    };
+    loadAnimation();
+  }, []);
 
   useEffect(() => {
     // Scroll animations
@@ -32,7 +55,7 @@ export default function LandingPage() {
     const handleSmoothScroll = (e) => {
       e.preventDefault();
       const targetId = e.currentTarget.getAttribute('href');
-      if (targetId && targetId !== '#') { // Ensure valid targetId
+      if (targetId && targetId !== '#') {
         const target = document.querySelector(targetId);
         if (target) {
           target.scrollIntoView({
@@ -43,23 +66,19 @@ export default function LandingPage() {
       }
     };
 
-    // Select only non-footer links for smooth scrolling
     const anchors = document.querySelectorAll('a[href^="#"]:not(.footer-link)');
     anchors.forEach((anchor) => {
       anchor.addEventListener('click', handleSmoothScroll);
     });
 
-    // Add .loaded class to body after animations
     const timer = setTimeout(() => {
       document.body.classList.add('loaded');
     }, 1000);
 
-    // Ensure .loaded is added on window load as fallback
     window.addEventListener('load', () => {
       document.body.classList.add('loaded');
     });
 
-    // Cleanup event listeners on component unmount
     return () => {
       anchors.forEach((anchor) => {
         anchor.removeEventListener('click', handleSmoothScroll);
@@ -95,10 +114,9 @@ export default function LandingPage() {
     setTimeout(() => {
       setIsMessageVisible(false);
       setIsLoginModalOpen(false);
-    }, 5000); // Hide message and close modal after 5 seconds
+    }, 5000);
   };
 
-  // Handler for footer links to navigate to about page
   const handleFooterLinkClick = (e) => {
     e.preventDefault();
     router.push('/About');
@@ -119,13 +137,14 @@ export default function LandingPage() {
           href="https://fonts.googleapis.com/css2?family=Helvetica:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.9.6/lottie.min.js" async />
       </Head>
       <div className="page-wrapper">
         <header>
           <nav className="container">
             <a href="#" className="logo">
               <img src="/assets/Logo.png" alt="StartupSync Logo" className="logo-image" />
-              StrategiQ
+              TrillionTribe
             </a>
             <button className="cta-button" onClick={handleLoginClick}>
               Login
@@ -162,13 +181,15 @@ export default function LandingPage() {
           </section>
 
           <section className="world-image-section scroll-reveal">
-            <img
-              src="/assets/world.png"
-              alt="Global Startup Network"
-              className="world-image"
-              width="1230"
-              height="300"
-            />
+            {animationData ? (
+              <Lottie
+                animationData={animationData}
+                loop={true}
+                className="world-animation"
+              />
+            ) : (
+              <div>Loading animation...</div> // Fallback while animation loads
+            )}
           </section>
 
           <section className="cta-section">
@@ -222,7 +243,6 @@ export default function LandingPage() {
           </div>
         </footer>
 
-        {/* Login Modal */}
         {isLoginModalOpen && (
           <div className={styles.modalOverlay}>
             <div className={styles.modal}>

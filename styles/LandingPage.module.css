@@ -124,7 +124,13 @@ footer .container {
   margin-bottom: 0.5rem;
 }
 
-/* Responsive Design */
+.world-animation {
+  width: 100vw;
+  height: auto;
+  display: block;
+  margin: 0;
+}
+
 @media (max-width: 768px) {
   .modal {
     max-width: 90%;
@@ -133,5 +139,10 @@ footer .container {
 
   .modal h2 {
     font-size: 1.5rem;
+  }
+
+  .world-animation {
+    width: 100vw;
+    height: auto;
   }
 }
