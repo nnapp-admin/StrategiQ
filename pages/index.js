@@ -24,12 +24,12 @@ export default function SplashPage() {
 
   const handleTextClick = () => {
     if (isAnimationComplete) {
-      router.push('/landingPage');
+      router.push('/landing');
     }
   };
 
   const handleLogoClick = () => {
-    router.push('/landingPage');
+    router.push('/landing');
   };
 
   return (

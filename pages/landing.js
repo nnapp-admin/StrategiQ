@@ -9,26 +9,59 @@ export default function LandingPage() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isMessageVisible, setIsMessageVisible] = useState(false);
   const [animationData, setAnimationData] = useState(null);
+  const [loadingAnimationData, setLoadingAnimationData] = useState(null);
   const [expandedServices, setExpandedServices] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadAnimation = async () => {
+    const loadAssets = async () => {
       try {
-        const response = await fetch('/assets/world.json');
-        if (response.ok) {
-          const data = await response.json();
-          setAnimationData(data);
+        // List of all assets to preload
+        const assetPromises = [
+          fetch('/assets/world.json'),
+          fetch('/assets/Loading.json'),
+          ...[
+            '1.png',
+            '2.png',
+            '3.svg',
+            '4.svg',
+            '5.png',
+            '6.png',
+            '7.svg',
+            '8.png',
+            '9.png',
+            '10.png',
+            '11.png',
+            'Logo.png',
+            'Faces.png',
+          ].map((img) => fetch(`/assets/${img}`)),
+        ];
+
+        // Fetch all assets in parallel
+        const responses = await Promise.all(assetPromises);
+
+        // Check if all responses are OK
+        if (responses.every((res) => res.ok)) {
+          const [worldData, loadingData, ...imageResponses] = responses;
+          setAnimationData(await worldData.json());
+          setLoadingAnimationData(await loadingData.json());
+          // Image responses are not parsed as JSON; just ensure they are fetched
         } else {
-          console.error('Failed to load world.json');
+          console.error('Failed to load one or more assets');
         }
       } catch (error) {
-        console.error('Error fetching animation:', error);
+        console.error('Error fetching assets:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
-    loadAnimation();
+
+    loadAssets();
   }, []);
 
   useEffect(() => {
+    if (isLoading) return; // Skip effects until loading is complete
+
     const observerOptions = {
       threshold: 0.05,
       rootMargin: '0px 0px -100px 0px',
@@ -84,7 +117,7 @@ export default function LandingPage() {
         document.body.classList.add('loaded');
       });
     };
-  }, []);
+  }, [isLoading]);
 
   const handleJoinClick = () => {
     router.push('/register');
@@ -218,6 +251,18 @@ export default function LandingPage() {
     },
   ];
 
+  if (isLoading || !loadingAnimationData) {
+    return (
+      <div className={styles.loadingContainer}>
+        <Lottie
+          animationData={loadingAnimationData}
+          loop={true}
+          className={styles.loadingAnimation}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -233,18 +278,22 @@ export default function LandingPage() {
           href="https://fonts.googleapis.com/css2?family=Helvetica:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.9.6/lottie.min.js" async />
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.9.6/lottie.min.js"
+          async
+        />
       </Head>
       <div className="page-wrapper">
         <header>
           <nav className="container">
             <a href="#" className="logo">
-              <img src="/assets/Logo.png" alt="StartupSync Logo" className="logo-image" />
-              FireFounder
+              <img
+                src="/assets/Logo.png"
+                alt="StartupSync Logo"
+                className="logo-image"
+              />
+              FounderCult
             </a>
-            <button className="cta-button" onClick={handleLoginClick}>
-              Login
-            </button>
           </nav>
         </header>
 
@@ -255,22 +304,32 @@ export default function LandingPage() {
                 <div className="hero-text">
                   <h1>Turn Startup Chaos into a Clear Game Plan ♘</h1>
                   <p>
-                    Your complete startup command center. All the tools, services, and connections startup founders need — to build smarter, move faster, and grow together.
+                    Your complete startup command center. All the tools, services,
+                    and connections startup founders need — to build smarter, move
+                    faster, and grow together.
                   </p>
                   <div className="hero-buttons">
                     <button className="cta-button" onClick={handleJoinClick}>
                       Join
                     </button>
-                    <button className="secondary-button" onClick={handleLoginClick}>
+                    <button
+                      className="secondary-button"
+                      onClick={handleLoginClick}
+                    >
                       Login
                     </button>
                   </div>
                   <div className="hero-checklist">
-                    ✓ Curated founder network ✓ Secure collaboration tools ✓ Partnership-focused
+                    ✓ Curated founder network ✓ Secure collaboration tools ✓
+                    Partnership-focused
                   </div>
                 </div>
                 <div className="hero-visual">
-                  <img src="/assets/Faces.png" alt="Startup Collaboration Network" className="hero-image" />
+                  <img
+                    src="/assets/Faces.png"
+                    alt="Startup Collaboration Network"
+                    className="hero-image"
+                  />
                 </div>
               </div>
             </div>
@@ -294,13 +353,24 @@ export default function LandingPage() {
               <div className="services-content">
                 {services.map((service, index) => (
                   <div className="service-item" key={index}>
-                    <div className="service-header" onClick={() => toggleService(index)}>
+                    <div
+                      className="service-header"
+                      onClick={() => toggleService(index)}
+                    >
                       <h3>{service.title}</h3>
-                      <span className={`toggle-icon ${expandedServices[index] ? 'expanded' : ''}`}>
+                      <span
+                        className={`toggle-icon ${
+                          expandedServices[index] ? 'expanded' : ''
+                        }`}
+                      >
                         ▼
                       </span>
                     </div>
-                    <div className={`service-content ${expandedServices[index] ? 'expanded' : ''}`}>
+                    <div
+                      className={`service-content ${
+                        expandedServices[index] ? 'expanded' : ''
+                      }`}
+                    >
                       <ul>
                         {service.items.map((item, i) => (
                           <li key={i}>{item}</li>
@@ -317,17 +387,56 @@ export default function LandingPage() {
             <div className="container">
               <div className="cta-content">
                 <h2>Don't miss the Train!</h2>
-                <p>Join a verified network of startup founders from around the world and start collaborating on partnerships that drive growth.</p>
+                <p>
+                  Join a verified network of startup founders from around the
+                  world and start collaborating on partnerships that drive growth.
+                </p>
                 <div className="image-carousel">
-                  {['1.png', '2.png', '3.svg', '4.svg', '5.png', '6.png', '7.svg', '8.png','9.png','10.png', '11.png'].map((img, index) => (
-                    <img key={index} src={`/assets/${img}`} alt={`Carousel image ${index + 1}`} className="carousel-image" />
+                  {[
+                    '1.png',
+                    '2.png',
+                    '3.svg',
+                    '4.svg',
+                    '5.png',
+                    '6.png',
+                    '7.svg',
+                    '8.png',
+                    '9.png',
+                    '10.png',
+                    '11.png',
+                  ].map((img, index) => (
+                    <img
+                      key={index}
+                      src={`/assets/${img}`}
+                      alt={`Carousel image ${index + 1}`}
+                      className="carousel-image"
+                    />
                   ))}
-                  {/* Duplicate images for seamless loop */}
-                  {['1.png', '2.png', '3.svg', '4.svg', '5.png', '6.png', '7.svg', '8.png','9.png','10.png', '11.png'].map((img, index) => (
-                    <img key={`dup-${index}`} src={`/assets/${img}`} alt={`Carousel image ${index + 1}`} className="carousel-image" />
+                  {[
+                    '1.png',
+                    '2.png',
+                    '3.svg',
+                    '4.svg',
+                    '5.png',
+                    '6.png',
+                    '7.svg',
+                    '8.png',
+                    '9.png',
+                    '10.png',
+                    '11.png',
+                  ].map((img, index) => (
+                    <img
+                      key={`dup-${index}`}
+                      src={`/assets/${img}`}
+                      alt={`Carousel image ${index + 1}`}
+                      className="carousel-image"
+                    />
                   ))}
                 </div>
-                <button className="cta-button cta-button-large" onClick={handleJoinClick}>
+                <button
+                  className="cta-button cta-button-large"
+                  onClick={handleJoinClick}
+                >
                   Start Your Application
                 </button>
               </div>
@@ -344,22 +453,38 @@ export default function LandingPage() {
                 <h3>Company</h3>
                 <ul>
                   <li>
-                    <a href="/About" className="footer-link" onClick={handleFooterLinkClick}>
+                    <a
+                      href="/About"
+                      className="footer-link"
+                      onClick={handleFooterLinkClick}
+                    >
                       About Us
                     </a>
                   </li>
                   <li>
-                    <a href="/About" className="footer-link" onClick={handleFooterLinkClick}>
+                    <a
+                      href="/About"
+                      className="footer-link"
+                      onClick={handleFooterLinkClick}
+                    >
                       Privacy Policy
                     </a>
                   </li>
                   <li>
-                    <a href="/About" className="footer-link" onClick={handleFooterLinkClick}>
+                    <a
+                      href="/About"
+                      className="footer-link"
+                      onClick={handleFooterLinkClick}
+                    >
                       Terms of Service
                     </a>
                   </li>
                   <li>
-                    <a href="/About" className="footer-link" onClick={handleFooterLinkClick}>
+                    <a
+                      href="/About"
+                      className="footer-link"
+                      onClick={handleFooterLinkClick}
+                    >
                       Careers
                     </a>
                   </li>
@@ -381,7 +506,8 @@ export default function LandingPage() {
               </button>
               {isMessageVisible ? (
                 <div className={styles.message}>
-                  Thank you for applying! We're reviewing your profile and will update you once the verification process is complete.
+                  Thank you for applying! We're reviewing your profile and will
+                  update you once the verification process is complete.
                 </div>
               ) : (
                 <>
