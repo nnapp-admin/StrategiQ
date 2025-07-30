@@ -186,6 +186,15 @@
   overflow-x: hidden;
 }
 
+/* Message Card Specific Styling */
+.messageCard {
+  margin-top: 10px !important; /* Ensure this margin is applied */
+}
+
+.messageWrapper {
+  margin-top: 20px; /* Additional wrapper to enforce gap */
+}
+
 /* Component Overlay (for Network and Shop) */
 .componentOverlay {
   position: fixed;

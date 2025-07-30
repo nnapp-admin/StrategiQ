@@ -1,0 +1,74 @@
+.trendingContainer {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #ffffff;
+}
+
+.trendingTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.newsCard {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 250px;
+}
+
+.newsCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.cardTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+}
+
+.cardDescription {
+  font-size: 0.95rem;
+  color: #cccccc;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.cardDate {
+  font-size: 0.85rem;
+  color: #aaaaaa;
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .trendingContainer {
+    padding: 1rem;
+  }
+  .trendingTitle {
+    font-size: 1.5rem;
+  }
+  .cardGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .newsCard {
+    min-height: 220px;
+  }
+}

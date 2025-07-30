@@ -1,20 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import Lottie from 'lottie-react'; // Import Lottie component
-import styles from '../styles/LandingPage.module.css'; // Import CSS module for modal styling
+import Lottie from 'lottie-react';
+import styles from '../styles/LandingPage.module.css';
 
 export default function LandingPage() {
   const router = useRouter();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isMessageVisible, setIsMessageVisible] = useState(false);
-  const [animationData, setAnimationData] = useState(null); // State for animation data
+  const [animationData, setAnimationData] = useState(null);
+  const [expandedServices, setExpandedServices] = useState({});
 
-  // Fetch animation data if needed (optional, for dynamic loading)
   useEffect(() => {
-    // If world.json is in public/assets/, you can reference it directly
-    // Lottie component can handle the path directly, so no fetch is strictly needed
-    // This useEffect is a fallback if you need to load JSON dynamically
     const loadAnimation = async () => {
       try {
         const response = await fetch('/assets/world.json');
@@ -32,7 +29,6 @@ export default function LandingPage() {
   }, []);
 
   useEffect(() => {
-    // Scroll animations
     const observerOptions = {
       threshold: 0.05,
       rootMargin: '0px 0px -100px 0px',
@@ -51,7 +47,6 @@ export default function LandingPage() {
       observer.observe(el);
     });
 
-    // Smooth scrolling for navigation links (exclude footer links)
     const handleSmoothScroll = (e) => {
       e.preventDefault();
       const targetId = e.currentTarget.getAttribute('href');
@@ -122,6 +117,107 @@ export default function LandingPage() {
     router.push('/About');
   };
 
+  const toggleService = (index) => {
+    setExpandedServices((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
+  const services = [
+    {
+      title: '1. Product Development',
+      items: [
+        '🔧 MVP Design & Development – Build fast prototypes for early market validation',
+        '🎨 UI/UX Design – User flows, wireframes, usability testing, design systems',
+        '💻 Full-stack Web Development – Frontend + backend builds (React, Node, etc.)',
+        '📱 Mobile App Development – iOS/Android apps, cross-platform solutions',
+        '🔌 API & Backend Architecture – Database design, scalable REST APIs, GraphQL',
+        '🧪 QA & Testing Services – Manual & automated testing, bug tracking',
+        '🚀 Tech Advisory / Fractional CTO – Product roadmapping, tech stack selection',
+        '🔐 Security & Compliance Engineering – Especially for fintech/health startups',
+      ],
+    },
+    {
+      title: '2. Legal Assistance',
+      items: [
+        '🏢 Company Formation & Incorporation – India/US/Delaware/LLC setup',
+        '📜 Founders\' Agreements & ESOPs – Equity splits, vesting terms',
+        '🔒 IP Protection – Trademarks, copyrights, patents',
+        '📄 Contract Drafting & Review – Client contracts, employment agreements',
+        '📚 Compliance & Regulatory – Startup-specific laws, GDPR, PCI-DSS, etc.',
+        '🤝 Investor Legal Docs – SAFEs, convertible notes, term sheets',
+        '🌍 International Expansion Legalities – Cross-border entity formation',
+        '📁 Privacy Policy & T&C Drafting – Website and product compliance',
+      ],
+    },
+    {
+      title: '3. Co-founder & Hiring',
+      items: [
+        '🧑‍💼 Co-founder Discovery & Matching – Based on skills, vision, chemistry',
+        '🧠 Early Talent Acquisition – Engineers, designers, marketers, PMs',
+        '🛠 Technical Hiring as a Service – Vetted devs, freelance CTOs',
+        '💼 Hiring Infrastructure Setup – ATS, interview workflows, onboarding',
+        '👥 Remote Hiring Networks – Global hiring, async team ops',
+        '📈 Team Scaling Strategy – When and how to hire for growth',
+        '📊 Equity & Compensation Benchmarking – What % to offer, how much to pay',
+        '🧾 Hiring Compliance – Offer letters, contracts, tax forms',
+      ],
+    },
+    {
+      title: '4. Fundraising & Investment',
+      items: [
+        '💸 Pitch Deck Design & Storytelling – Investor-ready, compelling decks',
+        '🧾 Financial Modeling & Projections – 3–5 year models, cash flow, runway',
+        '🗂 Investor Research & Shortlisting – Matching based on stage & sector',
+        '🧑‍⚖️ Term Sheet & Cap Table Advisory – Equity dilution, founder protection',
+        '📢 Fundraising Campaign Management – End-to-end outreach & follow-ups',
+        '🤝 Investor Warm Intros – From angels to VCs and syndicates',
+        '📈 Due Diligence Preparation – Data room setup, checklist audits',
+        '📄 Grant Writing & Non-dilutive Funding – For tech, impact, or R&D startups',
+      ],
+    },
+    {
+      title: '5. Marketing & Growth',
+      items: [
+        '🌐 Digital Marketing (Paid & Organic) – Google Ads, Meta Ads, SEO',
+        '📲 Social Media & Content Marketing – Strategy, copy, visuals, scheduling',
+        '🚀 Launch Campaigns & Pre-launch Hype – Waitlists, influencer collabs',
+        '🧠 Growth Hacking Experiments – Virality loops, referral systems',
+        '🛍 Product Marketing & Positioning – Market-fit messaging & GTM',
+        '📈 Analytics & Funnel Optimization – CRO, heatmaps, A/B testing',
+        '📬 Email Marketing & Drip Campaigns – Newsletters, onboarding series',
+        '📱 ASO & App Launch Marketing – App store optimization, ratings boosts',
+      ],
+    },
+    {
+      title: '6. Finance & Accounting',
+      items: [
+        '📊 Startup Accounting & Bookkeeping – Monthly records, expense tracking',
+        '📈 Runway & Burn Rate Tracking – Dashboard + alerts',
+        '🧮 Financial Modeling & Forecasting – For founders and investors',
+        '🧾 Tax Filing & Planning – Startup-specific taxation, R&D credits',
+        '🧑‍💼 Virtual CFO Services – Financial strategy, investor reporting',
+        '💰 Payroll Setup & Management – Compliance with local laws',
+        '🏦 Fund Allocation & Expense Auditing – For grant or raised capital',
+        '🔍 Financial Due Diligence Readiness – For fundraising or M&A',
+      ],
+    },
+    {
+      title: '7. Trending News',
+      items: [
+        '📰 Startup Funding Updates – Recent VC investments, angel rounds, and exits',
+        '🚀 Emerging Tech Trends – AI, Web3, biotech, and other high-growth sectors',
+        '🌍 Global Startup Ecosystem Insights – New hubs, policies, and opportunities',
+        '📈 Market & Consumer Behavior Shifts – Impacting startup strategies',
+        '🧑‍💼 Founder Stories & Lessons – Successes, failures, and pivots',
+        '⚖️ Regulatory & Policy Changes – New laws affecting startups (e.g., data privacy, tax incentives)',
+        '🤝 Partnerships & Acquisitions – Major collaborations or M&A in the startup space',
+        '🌟 Innovation Spotlights – Breakthrough products, services, or business models',
+      ],
+    },
+  ];
+
   return (
     <>
       <Head>
@@ -144,7 +240,7 @@ export default function LandingPage() {
           <nav className="container">
             <a href="#" className="logo">
               <img src="/assets/Logo.png" alt="StartupSync Logo" className="logo-image" />
-              TrillionTribe
+              FireFounder
             </a>
             <button className="cta-button" onClick={handleLoginClick}>
               Login
@@ -157,9 +253,9 @@ export default function LandingPage() {
             <div className="container">
               <div className="hero-content fade-in">
                 <div className="hero-text">
-                  <h1>A Networking Site for Founders to Collaborate & Grow</h1>
+                  <h1>Turn Startup Chaos into a Clear Game Plan ♘</h1>
                   <p>
-                    For NO Entry fee, join a curated network of startup founders to form partnerships, share resources, and accelerate growth. Find design partners, early adopters, co-marketing allies, or strategic collaborators in a secure, focused space. No noise, no monthly fees—just real opportunities to build together. Your startup deserves the right partners to thrive.
+                    Your complete startup command center. All the tools, services, and connections startup founders need — to build smarter, move faster, and grow together.
                   </p>
                   <div className="hero-buttons">
                     <button className="cta-button" onClick={handleJoinClick}>
@@ -188,15 +284,49 @@ export default function LandingPage() {
                 className="world-animation"
               />
             ) : (
-              <div>Loading animation...</div> // Fallback while animation loads
+              <div></div>
             )}
+          </section>
+
+          <section className="services-section scroll-reveal">
+            <div className="container">
+              <h2>Our Services</h2>
+              <div className="services-content">
+                {services.map((service, index) => (
+                  <div className="service-item" key={index}>
+                    <div className="service-header" onClick={() => toggleService(index)}>
+                      <h3>{service.title}</h3>
+                      <span className={`toggle-icon ${expandedServices[index] ? 'expanded' : ''}`}>
+                        ▼
+                      </span>
+                    </div>
+                    <div className={`service-content ${expandedServices[index] ? 'expanded' : ''}`}>
+                      <ul>
+                        {service.items.map((item, i) => (
+                          <li key={i}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </section>
 
           <section className="cta-section">
             <div className="container">
               <div className="cta-content">
-                <h2>Don't miss the Train! </h2>
-                <p>Join a curated network of startup founders and start collaborating on partnerships that drive growth.</p>
+                <h2>Don't miss the Train!</h2>
+                <p>Join a verified network of startup founders from around the world and start collaborating on partnerships that drive growth.</p>
+                <div className="image-carousel">
+                  {['1.png', '2.png', '3.svg', '4.svg', '5.png', '6.png', '7.svg', '8.png','9.png','10.png', '11.png'].map((img, index) => (
+                    <img key={index} src={`/assets/${img}`} alt={`Carousel image ${index + 1}`} className="carousel-image" />
+                  ))}
+                  {/* Duplicate images for seamless loop */}
+                  {['1.png', '2.png', '3.svg', '4.svg', '5.png', '6.png', '7.svg', '8.png','9.png','10.png', '11.png'].map((img, index) => (
+                    <img key={`dup-${index}`} src={`/assets/${img}`} alt={`Carousel image ${index + 1}`} className="carousel-image" />
+                  ))}
+                </div>
                 <button className="cta-button cta-button-large" onClick={handleJoinClick}>
                   Start Your Application
                 </button>

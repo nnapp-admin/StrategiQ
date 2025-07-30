@@ -6,6 +6,8 @@ import dynamic from 'next/dynamic';
 import MessageCard from '../components/MessageCard';
 import UserProfile from '../components/UserProfile';
 import ProfileCard from '../components/ProfileCard';
+import TrendingComponent from '../components/TrendingComponent';
+import PremiumCard from '../components/PremiumCard';
 import styles from '../styles/Dashboard.module.css';
 
 // Dynamically import components with SSR disabled
@@ -18,6 +20,7 @@ export default function Dashboard() {
   const [isNetworkOpen, setIsNetworkOpen] = useState(false);
   const [isContinentsDisplayOpen, setIsContinentsDisplayOpen] = useState(false);
   const [isContinentShopOpen, setIsContinentShopOpen] = useState(false);
+  const [isTrendingOpen, setIsTrendingOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDashboardVisible, setIsDashboardVisible] = useState(true);
   const [selectedContinent, setSelectedContinent] = useState(null);
@@ -37,7 +40,6 @@ export default function Dashboard() {
     { id: 3, name: 'Global News Group', lastMessage: 'New assignment posted', time: '2 days ago', isOnline: true },
   ]);
 
-  // Sample network users for profile cards, including users not in chatList
   const [networkUsers] = useState([
     {
       name: 'John Smith',
@@ -155,6 +157,7 @@ export default function Dashboard() {
       setIsNetworkOpen(true);
       setIsContinentsDisplayOpen(false);
       setIsContinentShopOpen(false);
+      setIsTrendingOpen(false);
       setIsSidebarOpen(false);
       setSelectedContinent(null);
       setSelectedChat(null);
@@ -166,6 +169,20 @@ export default function Dashboard() {
     setTimeout(() => {
       setIsContinentsDisplayOpen(true);
       setIsNetworkOpen(false);
+      setIsContinentShopOpen(false);
+      setIsTrendingOpen(false);
+      setIsSidebarOpen(false);
+      setSelectedContinent(null);
+      setSelectedChat(null);
+    }, 300);
+  };
+
+  const handleTrendingClick = () => {
+    setIsDashboardVisible(false);
+    setTimeout(() => {
+      setIsTrendingOpen(true);
+      setIsNetworkOpen(false);
+      setIsContinentsDisplayOpen(false);
       setIsContinentShopOpen(false);
       setIsSidebarOpen(false);
       setSelectedContinent(null);
@@ -185,6 +202,7 @@ export default function Dashboard() {
     setIsNetworkOpen(false);
     setIsContinentsDisplayOpen(false);
     setIsContinentShopOpen(false);
+    setIsTrendingOpen(false);
     setSelectedContinent(null);
     setSelectedChat(null);
     setTimeout(() => {
@@ -202,6 +220,7 @@ export default function Dashboard() {
     };
     setSelectedChat(chat);
     setIsNetworkOpen(false);
+    setIsTrendingOpen(false);
     setIsDashboardVisible(true);
   };
 
@@ -221,7 +240,7 @@ export default function Dashboard() {
           <nav className={styles.nav}>
             <button className={styles.logo} onClick={handleCloseComponent}>
               <Image src="/assets/Logo.png" alt="The Megheza Logo" width={48} height={48} className={styles.logoImage} />
-              <span className={styles.logoText}>Megheza</span>
+              <span className={styles.logoText}>FireFounder</span>
             </button>
             <div className={styles.headerButtons}>
               <button className={styles.headerButton} onClick={handleNetworkClick}>
@@ -229,6 +248,9 @@ export default function Dashboard() {
               </button>
               <button className={styles.headerButton} onClick={handleShopClick}>
                 Resources
+              </button>
+              <button className={styles.headerButton} onClick={handleTrendingClick}>
+                Trending
               </button>
             </div>
             <button className={styles.hamburger} onClick={toggleSidebar}>
@@ -241,8 +263,13 @@ export default function Dashboard() {
           <section className={styles.dashboardSection}>
             <div className={styles.container}>
               <div className={`${styles.dashboardContent} ${isDashboardVisible ? styles.visible : styles.hidden}`}>
-                <UserProfile user={user} setUser={setUser} />
-                <MessageCard chatList={chatList} selectedChat={selectedChat} setSelectedChat={setSelectedChat} />
+                <div className={styles.cardContainer}>
+                  <UserProfile user={user} setUser={setUser} />
+                  <PremiumCard />
+                  <div className={styles.messageWrapper}>
+                    <MessageCard className={styles.messageCard} chatList={chatList} selectedChat={selectedChat} setSelectedChat={setSelectedChat} />
+                  </div>
+                </div>
               </div>
 
               {isNetworkOpen && (
@@ -284,6 +311,16 @@ export default function Dashboard() {
                   </div>
                 </div>
               )}
+              {isTrendingOpen && (
+                <div className={styles.componentOverlay}>
+                  <div className={styles.component}>
+                    <button className={styles.closeButton} onClick={handleCloseComponent}>
+                      ×
+                    </button>
+                    <TrendingComponent onClose={handleCloseComponent} />
+                  </div>
+                </div>
+              )}
             </div>
           </section>
         </main>
@@ -297,6 +334,9 @@ export default function Dashboard() {
           </button>
           <button className={styles.sidebarButton} onClick={handleShopClick}>
             Resources
+          </button>
+          <button className={styles.sidebarButton} onClick={handleTrendingClick}>
+            Trending
           </button>
         </div>
 
@@ -349,6 +389,13 @@ export default function Dashboard() {
           max-height: 80vh;
           overflow-y: auto;
           padding: 1rem;
+        }
+        .${styles.cardContainer} {
+          display: flex;
+          flex-direction: column;
+          gap: 0; /* Removed gap to rely on explicit margins */
+          max-width: 600px;
+          margin: 0 auto;
         }
       `}</style>
     </>
