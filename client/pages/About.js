@@ -1,13 +1,43 @@
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import styles from '../styles/About.module.css';
 
 export default function AboutPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleHashScroll = () => {
+      const { hash } = window.location;
+      if (hash) {
+        const id = hash.substring(1); // Remove the '#' from hash
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+        }
+      }
+    };
+
+    // Run on mount and when hash changes
+    handleHashScroll();
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashScroll);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashScroll);
+    };
+  }, [router.asPath]);
+
   return (
     <>
       <Head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>About - StrategiQ</title>
+        <title>About - FounderCult</title>
         <link
           rel="preload"
           as="style"
@@ -20,22 +50,22 @@ export default function AboutPage() {
       </Head>
       <div className={styles.container}>
         <main className={styles.main}>
-          <section className={styles.section}>
+          <section id="about-us" className={styles.section}>
             <h1 className={styles.title}>About Us</h1>
             <div className={styles.content}>
-              <p>At StrategiQ, we believe the future of startups lies not just in brilliant ideas, but in strategic collaboration.</p>
-              <p>We’re building the world’s first platform designed exclusively for startup founders to discover, connect, and collaborate with one another. Whether you're looking to co-launch a product, exchange services, bundle offerings, or find your next strategic ally — this is the place where deals begin.</p>
-              <p>Every profile on StrategiQ is more than a business card. It’s a live intent layer — telling the world what you’re building, what you offer, and what you’re looking for.</p>
+              <p>At FounderCult, we believe the future of startups lies not just in brilliant ideas, but in strategic collaboration.</p>
+              <p>We’re building the world’s first platform designed exclusively for startup founders to discover, connect, access services and collaborate with one another. Whether you're looking to co-launch a product, exchange services, bundle offerings, or find your next strategic ally — this is the place where deals begin.</p>
+              <p>Every profile on FounderCult is more than a business card. It’s a live intent layer — telling the world what you’re building, what you offer, and what you’re looking for.</p>
               <p>We're not here to replace social media. We’re here to give startups their own networking OS — focused, frictionless, and future-minded.</p>
               <p><strong>Because when founders build together, better startups happen.</strong></p>
             </div>
           </section>
 
-          <section className={styles.section}>
+          <section id="privacy-policy" className={styles.section}>
             <h2 className={styles.subtitle}>Privacy Policy</h2>
             <div className={styles.content}>
               <p><strong>Effective Date: July 24, 2025</strong></p>
-              <p>At StrategiQ, your privacy is important to us. This Privacy Policy outlines how we collect, use, and protect your personal and business information.</p>
+              <p>At FounderCult, your privacy is important to us. This Privacy Policy outlines how we collect, use, and protect your personal and business information.</p>
               <h3>1. Information We Collect</h3>
               <ul>
                 <li><strong>Account Information:</strong> Name, email, startup name, role, etc.</li>
@@ -64,13 +94,13 @@ export default function AboutPage() {
             </div>
           </section>
 
-          <section className={styles.section}>
+          <section id="terms-of-service" className={styles.section}>
             <h2 className={styles.subtitle}>Terms of Service</h2>
             <div className={styles.content}>
               <p><strong>Effective Date: July 24, 2025</strong></p>
-              <p>Welcome to StrategiQ. By using our platform, you agree to the following terms:</p>
+              <p>Welcome to FounderCult. By using our platform, you agree to the following terms:</p>
               <h3>1. Platform Purpose</h3>
-              <p>StrategiQ is a platform for startup founders to connect, collaborate, and explore partnership opportunities. We provide tools to showcase your startup and interact with others, but we do not guarantee outcomes or enforce agreements.</p>
+              <p>FounderCult is a platform for startup founders to connect, collaborate, and explore partnership opportunities. We provide tools to showcase your startup and interact with others, but we do not guarantee outcomes or enforce agreements.</p>
               <h3>2. Eligibility</h3>
               <p>You must be at least 18 years old and authorized to represent your startup.</p>
               <h3>3. User Conduct</h3>
@@ -82,7 +112,7 @@ export default function AboutPage() {
                 <li>Harass or misuse the messaging features</li>
               </ul>
               <h3>4. Content Ownership</h3>
-              <p>You retain ownership of all the content you create. By posting on StrategiQ, you grant us a license to display your content to other users within the platform.</p>
+              <p>You retain ownership of all the content you create. By posting on FounderCult, you grant us a license to display your content to other users within the platform.</p>
               <h3>5. Disclaimers</h3>
               <p>We are not responsible for any business outcomes, losses, or damages that result from partnerships formed through the platform.</p>
               <h3>6. Termination</h3>
@@ -92,9 +122,17 @@ export default function AboutPage() {
               <p>For legal inquiries, contact us at <a href="mailto:cassini.corporation@gmail.com">cassini.corporation@gmail.com</a>.</p>
             </div>
           </section>
+
+          <section id="careers" className={styles.section}>
+            <h2 className={styles.subtitle}>Careers</h2>
+            <div className={styles.content}>
+              <p>We are always looking for passionate individuals to join our team at FounderCult. Currently, we do not have specific open positions listed, but we welcome speculative applications from talented professionals interested in contributing to our mission.</p>
+              <p>Please send your resume and a brief cover letter to <a href="mailto:cassini.corporation@gmail.com">cassini.corporation@gmail.com</a>.</p>
+            </div>
+          </section>
         </main>
         <footer className={styles.footer}>
-          <p>Copyright © 2025 StrategiQ. All Rights Reserved.</p>
+          <p>Copyright © {new Date().getFullYear()} FounderCult. All Rights Reserved.</p>
         </footer>
       </div>
     </>

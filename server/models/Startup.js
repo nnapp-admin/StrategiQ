@@ -65,7 +65,7 @@ const StartupSchema = new mongoose.Schema({
   },
   startupLogo: {
     type: String, // Store base64-encoded image string
-    default: null,
+    required: [true, 'Answer required to continue'],
   },
   website: {
     type: String,
@@ -150,17 +150,6 @@ const StartupSchema = new mongoose.Schema({
       'Pilot users', 'Talent exchange', 'Service bartering', 'Investment / Strategic partnerships',
       'Mentorship / Advisory', 'Other'
     ],
-  },
-  offer: {
-    type: String,
-    required: [true, 'Answer required to continue'],
-    trim: true,
-    maxlength: [500, 'Offer description cannot exceed 500 characters'],
-  },
-  collaborationTypes: {
-    type: [String],
-    required: [true, 'Answer required to continue'],
-    enum: ['Revenue-sharing', 'Equity-based', 'Cross-promotion', 'Paid partnerships', 'Volunteer/cause-driven'],
   },
 
   // Section 6: Visibility Options
