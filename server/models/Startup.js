@@ -46,7 +46,7 @@ const StartupSchema = new mongoose.Schema({
   },
   state: {
     type: String,
-    required: [true, 'Answer required to continue'], // Fixed typo 'phased to continue' to 'Answer required to continue'
+    required: [true, 'Answer required to continue'],
     enum: [
       'Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar',
       'Chandigarh', 'Chhattisgarh', 'Dadra & Nagar Haveli & Daman & Diu', 'Delhi', 'Goa',
@@ -76,7 +76,16 @@ const StartupSchema = new mongoose.Schema({
   industry: {
     type: [String],
     required: [true, 'Answer required to continue'],
-    enum: ['Fintech', 'HealthTech', 'SaaS', 'D2C', 'Web3', 'EdTech', 'Other'],
+    enum: [
+      'Fintech', 'HealthTech', 'SaaS', 'D2C', 'Web3', 'EdTech', 'AI/ML', 'AgriTech',
+      'CleanTech', 'Gaming', 'RetailTech', 'FoodTech', 'BioTech', 'AdTech', 'TravelTech', 'Other'
+    ],
+  },
+  otherIndustry: {
+    type: String,
+    trim: true,
+    maxlength: [100, 'Other industry description cannot exceed 100 characters'],
+    default: null,
   },
   foundedYear: {
     type: Number,

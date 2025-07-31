@@ -29,7 +29,10 @@ const questions = [
   { section: 2, name: 'startupName', label: 'Startup Name*', type: 'text', placeholder: 'Enter your startup’s name', required: true },
   { section: 2, name: 'startupLogo', label: 'Startup Logo (Optional, square logo preferred, max 200KB)', type: 'file', accept: 'image/*' },
   { section: 2, name: 'website', label: 'Website URL (Optional)', type: 'url', placeholder: 'Enter your startup’s website' },
-  { section: 2, name: 'industry', label: 'Startup Industry*', type: 'multibutton', options: ['Fintech', 'HealthTech', 'SaaS', 'D2C', 'Web3', 'EdTech', 'Other'], required: true },
+  { section: 2, name: 'industry', label: 'Startup Industry*', type: 'multibutton', options: [
+    'Fintech', 'HealthTech', 'SaaS', 'D2C', 'Web3', 'EdTech', 'AI/ML', 'AgriTech', 
+    'CleanTech', 'Gaming', 'RetailTech', 'FoodTech', 'BioTech', 'AdTech', 'TravelTech', 'Other'
+  ], required: true },
   { section: 2, name: 'foundedYear', label: 'Founded Year*', type: 'number', placeholder: 'Enter founding year (e.g., 2023)', required: true },
   { section: 2, name: 'teamSize', label: 'Team Size*', type: 'singlebutton', options: ['1–5', '6–10', '11–50', '50+'], required: true },
 
@@ -74,6 +77,7 @@ export default function RegisterPage() {
     startupLogo: null,
     website: '',
     industry: [],
+    otherIndustry: '',
     foundedYear: '',
     teamSize: '',
     elevatorPitch: '',
@@ -101,7 +105,7 @@ export default function RegisterPage() {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked, files } = e.target;
-    if (type !== 'file' && type !== 'checkbox' && value.length > (name === 'elevatorPitch' ? 120 : name === 'whatsappNumber' ? 15 : 500)) return;
+    if (type !== 'file' && type !== 'checkbox' && value.length > (name === 'elevatorPitch' ? 120 : name === 'whatsappNumber' ? 15 : name === 'otherIndustry' ? 100 : 500)) return;
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value,
@@ -196,6 +200,10 @@ export default function RegisterPage() {
       }
     }
 
+    if (name === 'industry' && formData.industry.includes('Other') && !formData.otherIndustry) {
+      newErrors.otherIndustry = 'Please specify the industry';
+    }
+
     setErrors((prev) => ({ ...prev, ...newErrors }));
     return Object.keys(newErrors).length === 0;
   };
@@ -225,6 +233,12 @@ export default function RegisterPage() {
       }
     });
 
+    // Validate otherIndustry if 'Other' is selected
+    if (formData.industry.includes('Other') && !formData.otherIndustry) {
+      newErrors.otherIndustry = 'Please specify the industry';
+      isValid = false;
+    }
+
     setErrors(newErrors);
 
     if (isValid) {
@@ -241,7 +255,7 @@ export default function RegisterPage() {
           dataToSend.startupLogo = await convertToBase64(dataToSend.startupLogo);
         }
 
-        const response = await fetch('http://localhost:3001/api/register', { // Updated to server endpoint
+        const response = await fetch('http://localhost:3001/api/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -265,6 +279,7 @@ export default function RegisterPage() {
             startupLogo: null,
             website: '',
             industry: [],
+            otherIndustry: '',
             foundedYear: '',
             teamSize: '',
             elevatorPitch: '',
@@ -293,6 +308,9 @@ export default function RegisterPage() {
               const errorIndex = questions.indexOf(firstErrorQuestion) + 1;
               setStep(errorIndex);
               window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (error.errors.otherIndustry) {
+              setStep(questions.findIndex((q) => q.name === 'industry') + 1);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
             }
           } else {
             alert(`Error: ${error.message}`);
@@ -305,7 +323,7 @@ export default function RegisterPage() {
         setIsSubmitting(false);
       }
     } else {
-      const firstErrorQuestion = questions.find((q) => newErrors[q.name]);
+      const firstErrorQuestion = questions.find((q) => newErrors[q.name]) || (newErrors.otherIndustry ? questions.find((q) => q.name === 'industry') : null);
       if (firstErrorQuestion) {
         const errorIndex = questions.indexOf(firstErrorQuestion) + 1;
         setStep(errorIndex);
@@ -489,6 +507,22 @@ export default function RegisterPage() {
                 </button>
               ))}
             </div>
+            {name === 'industry' && formData.industry.includes('Other') && (
+              <div className={styles.formGroup}>
+                <label htmlFor="otherIndustry">Other Industry*</label>
+                <input
+                  type="text"
+                  id="otherIndustry"
+                  name="otherIndustry"
+                  placeholder="Specify your industry"
+                  value={formData.otherIndustry || ''}
+                  onChange={handleInputChange}
+                  required
+                  maxLength={100}
+                />
+                {errors.otherIndustry && <p className={styles.error}>{errors.otherIndustry}</p>}
+              </div>
+            )}
             {errors[name] && <p className={styles.error}>{errors[name]}</p>}
           </div>
         );
@@ -536,7 +570,7 @@ export default function RegisterPage() {
       <div className={styles.registerContainer}>
         <header className={styles.siteHeader}>
           <nav className={styles.siteNav}>
-            <a href="/landing" className={styles.logo}> {/* Updated href to match your index page */}
+            <a href="/landing" className={styles.logo}>
               <img src="/assets/Logo.png" alt="StrategiQ Logo" className={styles.logoImage} />
               StrategiQ
             </a>
@@ -667,7 +701,7 @@ export default function RegisterPage() {
         <footer className={styles.siteFooter}>
           <div className={styles.container}>
             <div className={styles.footerBottom}>
-              <p>Copyright © 2025 StrategiQ. All Rights Reserved.</p> {/* Updated to match branding */}
+              <p>Copyright © 2025 StrategiQ. All Rights Reserved.</p>
             </div>
           </div>
         </footer>
