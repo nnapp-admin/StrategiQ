@@ -5,13 +5,13 @@ const mongoose = require('mongoose');
 const dbConnect = require('./lib/dbConnect');
 const Startup = require('./models/Startup');
 const registerRoute = require('./routes/register');
-const cors = require('cors'); // Add this line
+const cors = require('cors');
 
 const app = express();
 
 // Middleware to enable CORS
 app.use(cors({
-  origin: 'http://localhost:3000', // Allow requests from the client origin
+  origin: ['http://localhost:3000', 'https://foundercultbackend.onrender.com'], // Allow requests from both origins
   methods: ['GET', 'POST', 'OPTIONS'], // Allow these HTTP methods
   allowedHeaders: ['Content-Type'], // Allow these headers
 }));
