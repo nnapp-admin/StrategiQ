@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true, // Enables React Strict Mode for development
+  reactStrictMode: true,
   images: {
-    domains: ['images.unsplash.com'], // Allows Unsplash images used in Dashboard.js
+    domains: ['images.unsplash.com'],
   },
+  output: 'export',
   webpack(config) {
-    // Add support for SVG imports
     config.module.rules.push({
       test: /\.svg$/,
       use: ['@svgr/webpack'],
