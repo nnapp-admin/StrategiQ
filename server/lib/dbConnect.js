@@ -1,5 +1,4 @@
-// lib/dbConnect.js
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/startupSync';
 
@@ -30,4 +29,4 @@ async function dbConnect() {
   return cached.conn;
 }
 
-export default dbConnect;
+module.exports = dbConnect;

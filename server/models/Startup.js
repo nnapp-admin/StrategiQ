@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const StartupSchema = new mongoose.Schema({
   // Section 1: Founder Details
@@ -46,7 +46,7 @@ const StartupSchema = new mongoose.Schema({
   },
   state: {
     type: String,
-    required: [true, ' phased to continue'],
+    required: [true, 'Answer required to continue'], // Fixed typo 'phased to continue' to 'Answer required to continue'
     enum: [
       'Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar',
       'Chandigarh', 'Chhattisgarh', 'Dadra & Nagar Haveli & Daman & Diu', 'Delhi', 'Goa',
@@ -191,4 +191,4 @@ StartupSchema.pre('save', function (next) {
 // Singleton pattern to prevent model overwrite
 const Startup = mongoose.models.Startup || mongoose.model('Startup', StartupSchema);
 
-export default Startup;
+module.exports = Startup;

@@ -1,8 +1,9 @@
-// pages/api/register.js
-import dbConnect from '../../lib/dbConnect';
-import Startup from '../../models/Startup';
+const express = require('express');
+const router = express.Router();
+const dbConnect = require('../lib/dbConnect');
+const Startup = require('../models/Startup');
 
-export default async function handler(req, res) {
+router.post('/register', async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -28,13 +29,6 @@ export default async function handler(req, res) {
     }
     res.status(400).json({ message: 'Error submitting registration', error: error.message });
   }
-}
+});
 
-// Increase payload size limit for base64 data
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '50mb',
-    },
-  },
-};
+module.exports = router;

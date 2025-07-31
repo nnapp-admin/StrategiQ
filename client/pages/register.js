@@ -241,7 +241,7 @@ export default function RegisterPage() {
           dataToSend.startupLogo = await convertToBase64(dataToSend.startupLogo);
         }
 
-        const response = await fetch('/api/register', {
+        const response = await fetch('http://localhost:3001/api/register', { // Updated to server endpoint
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -536,8 +536,8 @@ export default function RegisterPage() {
       <div className={styles.registerContainer}>
         <header className={styles.siteHeader}>
           <nav className={styles.siteNav}>
-            <a href="/landingPage" className={styles.logo}>
-              <img src="/assets/Logo.png" alt="StartupSync Logo" className={styles.logoImage} />
+            <a href="/landing" className={styles.logo}> {/* Updated href to match your index page */}
+              <img src="/assets/Logo.png" alt="StrategiQ Logo" className={styles.logoImage} />
               StrategiQ
             </a>
           </nav>
@@ -667,7 +667,7 @@ export default function RegisterPage() {
         <footer className={styles.siteFooter}>
           <div className={styles.container}>
             <div className={styles.footerBottom}>
-              <p>Copyright © 2025 StartupSync. All Rights Reserved.</p>
+              <p>Copyright © 2025 StrategiQ. All Rights Reserved.</p> {/* Updated to match branding */}
             </div>
           </div>
         </footer>
