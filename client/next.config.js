@@ -3,6 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: ['images.unsplash.com'],
+    unoptimized: true, // Add this line to disable image optimization
   },
   output: 'export',
   webpack(config) {
