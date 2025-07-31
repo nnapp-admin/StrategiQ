@@ -171,7 +171,7 @@ export default function RegisterPage() {
     const { name, required, type } = question;
 
     if (required && (!formData[name] || (Array.isArray(formData[name]) && formData[name].length === 0))) {
-      newErrors[name] = 'Answer required to continue';
+      newErrors[name] = '⚠️ Answer required to continue';
     }
 
     if (name === 'whatsappNumber' && formData[name]) {

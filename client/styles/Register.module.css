@@ -34,7 +34,7 @@
 }
 
 .logo {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
   color: #ffffff;
   text-decoration: none;
@@ -47,6 +47,30 @@
   height: 3rem;
   width: auto;
   display: block;
+}
+
+.cta-button {
+  background: linear-gradient(135deg, #8B0000, #8B0000);
+  color: white;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 0, 0, 0.4);
+}
+
+.cta-button-large {
+  font-size: 1.1rem;
+  padding: 1rem 2.5rem;
 }
 
 .container {
@@ -86,7 +110,7 @@
 }
 
 .intro p:not(:last-child) {
-  text-align: justify;
+  text-align: left;
 }
 
 .intro p:last-child {
@@ -610,14 +634,6 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .siteHeader {
-    padding: 0.5rem 0;
-  }
-
-  .siteNav {
-    padding: 0 15px;
-  }
-
   .logoImage {
     height: 2.5rem;
   }
