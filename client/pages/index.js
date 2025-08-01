@@ -17,15 +17,17 @@ export default function LandingPage() {
     const loadAssets = async () => {
       const startTime = Date.now();
       try {
-        // Fetch world.json
-        const worldResponse = await fetch('/assets/world.json');
-        if (!worldResponse.ok) throw new Error('Failed to load world.json');
-        const worldData = await worldResponse.json();
-
-        // Fetch Loading.json
+        // Fetch Loading.json first
         const loadingResponse = await fetch('/assets/Loading.json');
         if (!loadingResponse.ok) throw new Error('Failed to load Loading.json');
         const loadingData = await loadingResponse.json();
+        setLoadingAnimationData(loadingData);
+
+        // Then fetch world.json
+        const worldResponse = await fetch('/assets/world.json');
+        if (!worldResponse.ok) throw new Error('Failed to load world.json');
+        const worldData = await worldResponse.json();
+        setAnimationData(worldData);
 
         // Preload images
         const images = [
@@ -56,10 +58,6 @@ export default function LandingPage() {
 
         // Wait for all images to load
         await Promise.all(imagePromises);
-
-        // Set animation data
-        setAnimationData(worldData);
-        setLoadingAnimationData(loadingData);
 
         // Ensure minimum 3-second loading time
         const elapsedTime = Date.now() - startTime;
@@ -271,12 +269,17 @@ export default function LandingPage() {
   if (isLoading) {
     return (
       <div className={styles.loadingContainer}>
-        {loadingAnimationData && (
+        {loadingAnimationData ? (
           <Lottie
             animationData={loadingAnimationData}
             loop={true}
             className={styles.loadingAnimation}
           />
+        ) : (
+          <div className={styles.fallbackLoader}>
+            <div className={styles.spinner}></div>
+            <p>Loading...</p>
+          </div>
         )}
       </div>
     );
@@ -288,6 +291,12 @@ export default function LandingPage() {
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Collaboration Platform for Startup Founders</title>
+        <link
+          rel="preload"
+          as="fetch"
+          href="/assets/Loading.json"
+          crossOrigin="anonymous"
+        />
         <link
           rel="preload"
           as="style"
