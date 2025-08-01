@@ -673,7 +673,7 @@ export default function RegisterPage() {
                       </p>
                       <p className={styles.warning}>
                         <strong>Please note:</strong> Official access links and communication will only be sent from our
-                        verified email address — <a href="mailto:cassini.corporation@gmail.com">cassini.corporation@gmail.com</a>.
+                        verified email address — <a href="mailto:support@foundercult.com">support@foundercult.com</a>.
                         Do not respond to or engage with messages from any other source. We strongly advise you to avoid
                         third-party messages or unsolicited offers claiming to represent this platform.
                       </p>
@@ -748,7 +748,7 @@ export default function RegisterPage() {
                     <p>We may use analytics tools and services to improve performance, all of which comply with relevant privacy regulations.</p>
                     <h3>7. Changes</h3>
                     <p>We may update this policy. Continued use of the platform constitutes acceptance of any changes.</p>
-                    <p>For any questions, contact us at <a href="mailto:cassini.corporation@gmail.com">cassini.corporation@gmail.com</a>.</p>
+                    <p>For any questions, contact us at <a href="mailto:support@foundercult.com">support@foundercult.com</a>.</p>
                   </div>
                 </section>
 
@@ -777,7 +777,7 @@ export default function RegisterPage() {
                     <p>We reserve the right to remove profiles or restrict access if users violate these terms or harm the integrity of the community.</p>
                     <h3>7. Modifications</h3>
                     <p>We may modify these terms. We'll notify users of significant changes. Continued use of the platform means you accept the revised terms.</p>
-                    <p>For legal inquiries, contact us at <a href="mailto:cassini.corporation@gmail.com">cassini.corporation@gmail.com</a>.</p>
+                    <p>For legal inquiries, contact us at <a href="mailto:support@foundercult.com">support@foundercult.com</a>.</p>
                   </div>
                 </section>
               </div>
