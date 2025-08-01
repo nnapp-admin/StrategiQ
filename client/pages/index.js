@@ -11,23 +11,33 @@ export default function LandingPage() {
   const [animationData, setAnimationData] = useState(null);
   const [loadingAnimationData, setLoadingAnimationData] = useState(null);
   const [expandedServices, setExpandedServices] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
+  const [isContentLoading, setIsContentLoading] = useState(true);
 
+  // Fetch Loading.json immediately
   useEffect(() => {
-    const loadAssets = async () => {
-      const startTime = Date.now();
+    const loadLoadingAnimation = async () => {
       try {
-        // Fetch Loading.json first
         const loadingResponse = await fetch('/assets/Loading.json');
         if (!loadingResponse.ok) throw new Error('Failed to load Loading.json');
         const loadingData = await loadingResponse.json();
         setLoadingAnimationData(loadingData);
+      } catch (error) {
+        console.error('Error loading Loading.json:', error);
+      }
+    };
+    loadLoadingAnimation();
+  }, []);
 
-        // Then fetch world.json
+  // Fetch other assets after Loading.json is ready
+  useEffect(() => {
+    if (!loadingAnimationData) return; // Wait until loading animation is ready
+
+    const loadAssets = async () => {
+      try {
+        // Fetch world.json
         const worldResponse = await fetch('/assets/world.json');
         if (!worldResponse.ok) throw new Error('Failed to load world.json');
         const worldData = await worldResponse.json();
-        setAnimationData(worldData);
 
         // Preload images
         const images = [
@@ -59,24 +69,21 @@ export default function LandingPage() {
         // Wait for all images to load
         await Promise.all(imagePromises);
 
-        // Ensure minimum 3-second loading time
-        const elapsedTime = Date.now() - startTime;
-        const remainingTime = 3000 - elapsedTime;
-        if (remainingTime > 0) {
-          await new Promise((resolve) => setTimeout(resolve, remainingTime));
-        }
+        // Set animation data
+        setAnimationData(worldData);
       } catch (error) {
         console.error('Error loading assets:', error);
       } finally {
-        setIsLoading(false);
+        setIsContentLoading(false);
       }
     };
 
     loadAssets();
-  }, []);
+  }, [loadingAnimationData]);
 
+  // Handle scroll effects and smooth scrolling
   useEffect(() => {
-    if (isLoading) return;
+    if (isContentLoading) return;
 
     const observerOptions = {
       threshold: 0.05,
@@ -133,7 +140,7 @@ export default function LandingPage() {
         document.body.classList.add('loaded');
       });
     };
-  }, [isLoading]);
+  }, [isContentLoading]);
 
   const handleJoinClick = () => {
     router.push('/join');
@@ -266,20 +273,16 @@ export default function LandingPage() {
     },
   ];
 
-  if (isLoading) {
+  // Show loading animation immediately if loadingAnimationData is available
+  if (!loadingAnimationData || isContentLoading) {
     return (
       <div className={styles.loadingContainer}>
-        {loadingAnimationData ? (
+        {loadingAnimationData && (
           <Lottie
             animationData={loadingAnimationData}
             loop={true}
             className={styles.loadingAnimation}
           />
-        ) : (
-          <div className={styles.fallbackLoader}>
-            <div className={styles.spinner}></div>
-            <p>Loading...</p>
-          </div>
         )}
       </div>
     );
@@ -293,8 +296,8 @@ export default function LandingPage() {
         <title>Collaboration Platform for Startup Founders</title>
         <link
           rel="preload"
-          as="fetch"
           href="/assets/Loading.json"
+          as="fetch"
           crossOrigin="anonymous"
         />
         <link
