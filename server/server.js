@@ -11,7 +11,7 @@ const app = express();
 
 // Middleware to enable CORS
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://foundercultbackend.onrender.com'], // Allow requests from both origins
+  origin: ['http://localhost:3000', 'https://foundercult.onrender.com'], // Allow requests from both origins
   methods: ['GET', 'POST', 'OPTIONS'], // Allow these HTTP methods
   allowedHeaders: ['Content-Type'], // Allow these headers
 }));
