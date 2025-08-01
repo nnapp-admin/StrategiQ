@@ -21,12 +21,8 @@ export default function AboutPage() {
       }
     };
 
-    // Run on mount and when hash changes
     handleHashScroll();
-
-    // Listen for hash changes
     window.addEventListener('hashchange', handleHashScroll);
-
     return () => {
       window.removeEventListener('hashchange', handleHashScroll);
     };
@@ -126,8 +122,12 @@ export default function AboutPage() {
           <section id="careers" className={styles.section}>
             <h2 className={styles.subtitle}>Careers</h2>
             <div className={styles.content}>
-              <p>We are always looking for passionate individuals to join our team at FounderCult. Currently, we do not have specific open positions listed, but we welcome speculative applications from talented professionals interested in contributing to our mission.</p>
-              <p>Please send your resume and a brief cover letter to <a href="join@foundercult.com">join@foundercult.com</a></p>
+              <p>
+                We're always on the lookout for driven, mission-aligned individuals to join the team at FounderCult.
+                Explore our{" "}
+                <a href="/partners">open positions</a> or feel free to send a speculative application if you believe your
+                skills can help us build something exceptional.
+              </p>
             </div>
           </section>
         </main>
