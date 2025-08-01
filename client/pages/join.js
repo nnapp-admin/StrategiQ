@@ -637,7 +637,7 @@ export default function RegisterPage() {
                   {step > 0 && step <= totalQuestions && (
                     <>
                       <h2 className={styles.sectionHeader}>
-                        Section {questions[step - 1].section}: {questions[step - 1].section === 1 ? 'Founder Details' : 
+                        {questions[step - 1].section === 1 ? 'Founder Details' : 
                         questions[step - 1].section === 2 ? 'Startup Basics' : 
                         questions[step - 1].section === 3 ? 'What Does Your Startup Do?' : 
                         questions[step - 1].section === 4 ? 'Traction & Credibility' : 
@@ -787,7 +787,7 @@ export default function RegisterPage() {
         <footer className={styles.siteFooter}>
           <div className={styles.container}>
             <div className={styles.footerBottom}>
-              <p>Copyright © 2025 FounderCult. All Rights Reserved.</p>
+              <p>Copyright © 2025 FounderCult.</p>
             </div>
           </div>
         </footer>

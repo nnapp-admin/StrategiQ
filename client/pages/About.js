@@ -132,7 +132,7 @@ export default function AboutPage() {
           </section>
         </main>
         <footer className={styles.footer}>
-          <p>Copyright © {new Date().getFullYear()} FounderCult. All Rights Reserved.</p>
+          <p>Copyright © {new Date().getFullYear()} FounderCult.</p>
         </footer>
       </div>
     </>

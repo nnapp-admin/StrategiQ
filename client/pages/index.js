@@ -437,7 +437,7 @@ export default function LandingPage() {
               <div className="footer-section"></div>
             </div>
             <div className="footer-bottom">
-              <p>Copyright © {new Date().getFullYear()} FounderCult. All Rights Reserved.</p>
+              <p>Copyright © {new Date().getFullYear()} FounderCult.</p>
             </div>
           </div>
         </footer>
