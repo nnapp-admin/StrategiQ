@@ -327,7 +327,7 @@ export default function LandingPage() {
                 <div className="hero-text">
                   <h1>Turn Startup Chaos into a Clear Game Plan ♘</h1>
                   <p>
-                    Your complete startup command center. All the tools, services, and connections startup founders need — to build smarter, move faster, and grow together.
+                    Your complete startup command center — All the tools, services & connections startup founders need — to build smarter, move faster & grow together.
                   </p>
                   <div className="hero-buttons">
                     <button className="cta-button" onClick={handleJoinClick}>
