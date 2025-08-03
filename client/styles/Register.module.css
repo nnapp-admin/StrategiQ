@@ -50,7 +50,7 @@
 }
 
 .cta-button {
-  background: linear-gradient(135deg, #8B0000, #8B0000);
+  background: linear-gradient(135deg, #0000FF, #0000FF);
   color: white;
   padding: 0.8rem 2rem;
   border: none;
@@ -60,12 +60,12 @@
   text-decoration: none;
   display: inline-block;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 255, 0.3);
 }
 
 .cta-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139, 0, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 255, 0.4);
 }
 
 .cta-button-large {
@@ -155,8 +155,8 @@
 .formGroup input:focus,
 .formGroup textarea:focus {
   outline: none;
-  border-color: #8b0000;
-  box-shadow: 0 0 5px rgba(139, 0, 0, 0.5);
+  border-color: #0000FF;
+  box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
 }
 
 .formGroup input[type="file"] {
@@ -167,7 +167,7 @@
   width: 200px;
   height: 200px;
   background: #333;
-  border: 2px solid #8b0000;
+  border: 2px solid #0000FF;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -181,7 +181,7 @@
 .profileCard:hover {
   background: #444;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 255, 0.3);
 }
 
 .previewImage {
@@ -300,8 +300,8 @@
 }
 
 .roleButton.selected {
-  border-color: #8b0000;
-  box-shadow: 0 0 5px rgba(139, 0, 0, 0.5);
+  border-color: #0000FF;
+  box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
 }
 
 .roleButton:hover {
@@ -323,8 +323,8 @@
 
 .otherInput:focus {
   outline: none;
-  border-color: #8b0000;
-  box-shadow: 0 0 5px rgba(139, 0, 0, 0.5);
+  border-color: #0000FF;
+  box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
 }
 
 .checkboxLabel {
@@ -402,7 +402,7 @@
 
 .nextButton,
 .backButton {
-  background: linear-gradient(135deg, #8b0000, #8b0000);
+  background: linear-gradient(135deg, #0000FF, #0000FF);
   color: white;
   padding: 0.8rem 1.5rem;
   border: none;
@@ -421,7 +421,7 @@
 .nextButton:hover,
 .backButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139, 0, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 255, 0.4);
 }
 
 .contactLink {
@@ -455,7 +455,7 @@
 }
 
 .submitButton {
-  background: linear-gradient(135deg, #8b0000, #8b0000);
+  background: linear-gradient(135deg, #0000FF, #0000FF);
   color: white;
   padding: 0.8rem 1.5rem;
   border: none;
@@ -470,7 +470,7 @@
 
 .submitButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139, 0, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 255, 0.4);
 }
 
 .submitting {
@@ -507,8 +507,8 @@
 .successMessage {
   text-align: center;
   padding: 2rem;
-  background-color: #8d8b00d0;
-  border: 1px solid #4b5300;
+  background-color: #0000FFd0;
+  border: 1px solid #000066;
   border-radius: 8px;
   margin: 1rem 0;
 }

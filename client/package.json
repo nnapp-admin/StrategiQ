@@ -7,11 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "next export"  
+    "export": "next export"
   },
   "dependencies": {
     "lottie-react": "^2.4.1",
-    "next": "^14.2.3",
+    "lucide-react": "^0.536.0",
+    "next": "^14.2.31",
     "pdfjs-dist": "^3.11.174",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -57,7 +57,7 @@
 
 .tab {
   background: none;
-  border: 2px solid #8b0000;
+  border: 2px solid #0000FF;
   color: #ffffff;
   padding: 1rem 2rem;
   border-radius: 5px;
@@ -68,11 +68,11 @@
 }
 
 .tab:hover {
-  background: #8b0000;
+  background: #0000FF;
 }
 
 .tab.active {
-  background: #8b0000;
+  background: #0000FF;
   color: #ffffff;
 }
 
@@ -96,7 +96,7 @@
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 255, 0.3);
 }
 
 .card h5 {
@@ -114,7 +114,7 @@
 
 .applyButton {
   display: inline-block;
-  background: linear-gradient(135deg, #8b0000, #a10000);
+  background: linear-gradient(135deg, #0000FF, #1e90ff);
   color: #ffffff;
   padding: 0.5rem 1rem;
   border-radius: 50px;
@@ -127,7 +127,7 @@
 
 .applyButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(139, 0, 0, 0.4);
+  box-shadow: 0 4px 10px rgba(0, 0, 255, 0.4);
 }
 
 .footer {
