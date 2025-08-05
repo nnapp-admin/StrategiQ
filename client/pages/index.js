@@ -30,16 +30,14 @@ export default function LandingPage() {
 
   // Fetch other assets after Loading.json is ready
   useEffect(() => {
-    if (!loadingAnimationData) return; // Wait until loading animation is ready
+    if (!loadingAnimationData) return;
 
     const loadAssets = async () => {
       try {
-        // Fetch world.json
         const worldResponse = await fetch('/assets/world.json');
         if (!worldResponse.ok) throw new Error('Failed to load world.json');
         const worldData = await worldResponse.json();
 
-        // Preload images
         const images = [
           '/assets/Logo.png',
           '/assets/Faces.png',
@@ -66,10 +64,7 @@ export default function LandingPage() {
             })
         );
 
-        // Wait for all images to load
         await Promise.all(imagePromises);
-
-        // Set animation data
         setAnimationData(worldData);
       } catch (error) {
         console.error('Error loading assets:', error);
@@ -273,7 +268,6 @@ export default function LandingPage() {
     },
   ];
 
-  // Show loading animation immediately if loadingAnimationData is available
   if (!loadingAnimationData || isContentLoading) {
     return (
       <div className={styles.loadingContainer}>
@@ -311,66 +305,63 @@ export default function LandingPage() {
         />
       </Head>
       <div className="page-wrapper">
-        <header>
-          <nav className="container">
-            <a href="#" className="logo">
-              <img src="/assets/Logo.png" alt="StartupSync Logo" className="logo-image" />
+        <header className={styles.header}>
+          <nav className={styles.nav}>
+            <a href="#" className={styles.logo}>
+              <img src="/assets/Logo.png" alt="StartupSync Logo" className={styles['logo-image']} />
               FounderCult
             </a>
           </nav>
         </header>
 
-        <main>
-          <section className="hero">
-            <div className="container">
-              <div className="hero-content fade-in">
-                <div className="hero-text">
+        <main className={styles.main}>
+          <section className={styles.hero}>
+            {animationData && (
+              <Lottie
+                animationData={animationData}
+                loop={true}
+                className={styles['world-animation']}
+              />
+            )}
+            <div className={styles.container}>
+              <div className={styles['hero-content']}>
+                <div className={styles['hero-text']}>
                   <h1>Turn Startup Chaos into a Clear Game Plan ♘</h1>
                   <p>
                     All the tools, services & connections startup founders need — to build smarter, move faster & grow together.
                   </p>
-                  <div className="hero-buttons">
-                    <button className="cta-button" onClick={handleJoinClick}>
+                  <div className={styles['hero-buttons']}>
+                    <button className={styles['cta-button']} onClick={handleJoinClick}>
                       Join
                     </button>
-                    <button className="secondary-button" onClick={handleLoginClick}>
+                    <button className={styles['secondary-button']} onClick={handleLoginClick}>
                       Login
                     </button>
                   </div>
-                  <div className="hero-checklist">
+                  <div className={styles['hero-checklist']}>
                     ✓ Curated founder network ✓ Secure collaboration tools ✓ Partnership-focused
                   </div>
                 </div>
-                <div className="hero-visual">
-                  <img src="/assets/Faces.png" alt="Startup Collaboration Network" className="hero-image" />
+                <div className={styles['hero-visual']}>
+                  <img src="/assets/Faces.png" alt="Startup Collaboration Network" className={styles['hero-image']} />
                 </div>
               </div>
             </div>
           </section>
 
-          <section className="world-image-section scroll-reveal">
-            {animationData && (
-              <Lottie
-                animationData={animationData}
-                loop={true}
-                className="world-animation"
-              />
-            )}
-          </section>
-
-          <section className="services-section scroll-reveal">
-            <div className="container">
+          <section className={styles['services-section'] + ' scroll-reveal'}>
+            <div className={styles.container}>
               <h2>Our Services</h2>
-              <div className="services-content">
+              <div className={styles['services-content']}>
                 {services.map((service, index) => (
-                  <div className="service-item" key={index}>
-                    <div className="service-header" onClick={() => toggleService(index)}>
+                  <div className={styles['service-item']} key={index}>
+                    <div className={styles['service-header']} onClick={() => toggleService(index)}>
                       <h3>{service.title}</h3>
-                      <span className={`toggle-icon ${expandedServices[index] ? 'expanded' : ''}`}>
+                      <span className={`${styles['toggle-icon']} ${expandedServices[index] ? styles.expanded : ''}`}>
                         ▼
                       </span>
                     </div>
-                    <div className={`service-content ${expandedServices[index] ? 'expanded' : ''}`}>
+                    <div className={`${styles['service-content']} ${expandedServices[index] ? styles.expanded : ''}`}>
                       <ul>
                         {service.items.map((item, i) => (
                           <li key={i}>{item}</li>
@@ -383,20 +374,20 @@ export default function LandingPage() {
             </div>
           </section>
 
-          <section className="cta-section">
-            <div className="container">
-              <div className="cta-content">
+          <section className={styles['cta-section']}>
+            <div className={styles.container}>
+              <div className={styles['cta-content']}>
                 <h2>Don't miss the Train!</h2>
                 <p>Join a verified network of startup founders from around the world and start collaborating on partnerships that drive growth.</p>
-                <div className="image-carousel">
+                <div className={styles['image-carousel']}>
                   {['1.png', '2.png', '3.svg', '4.svg', '5.png', '6.png', '7.svg', '8.png', '9.png', '10.png', '11.png'].map((img, index) => (
-                    <img key={index} src={`/assets/${img}`} alt={`Carousel image ${index + 1}`} className="carousel-image" />
+                    <img key={index} src={`/assets/${img}`} alt={`Carousel image ${index + 1}`} className={styles['carousel-image']} />
                   ))}
                   {['1.png', '2.png', '3.svg', '4.svg', '5.png', '6.png', '7.svg', '8.png', '9.png', '10.png', '11.png'].map((img, index) => (
-                    <img key={`dup-${index}`} src={`/assets/${img}`} alt={`Carousel image ${index + 1}`} className="carousel-image" />
+                    <img key={`dup-${index}`} src={`/assets/${img}`} alt={`Carousel image ${index + 1}`} className={styles['carousel-image']} />
                   ))}
                 </div>
-                <button className="cta-button cta-button-large" onClick={handleJoinClick}>
+                <button className={`${styles['cta-button']} ${styles['cta-button-large']}`} onClick={handleJoinClick}>
                   Start Your Application
                 </button>
               </div>
@@ -404,39 +395,39 @@ export default function LandingPage() {
           </section>
         </main>
 
-        <footer>
-          <div className="container">
-            <div className="footer-content">
-              <div className="footer-section"></div>
-              <div className="footer-section"></div>
-              <div className="footer-section company-section">
+        <footer className={styles.footer}>
+          <div className={styles.container}>
+            <div className={styles['footer-content']}>
+              <div className={styles['footer-section']}></div>
+              <div className={styles['footer-section']}></div>
+              <div className={`${styles['footer-section']} ${styles['company-section']}`}>
                 <h3>Company</h3>
                 <ul>
                   <li>
-                    <a href="/About#about-us" className="footer-link" onClick={(e) => handleFooterLinkClick(e, 'about-us')}>
+                    <a href="/About#about-us" className={styles['footer-link']} onClick={(e) => handleFooterLinkClick(e, 'about-us')}>
                       About Us
                     </a>
                   </li>
                   <li>
-                    <a href="/About#privacy-policy" className="footer-link" onClick={(e) => handleFooterLinkClick(e, 'privacy-policy')}>
+                    <a href="/About#privacy-policy" className={styles['footer-link']} onClick={(e) => handleFooterLinkClick(e, 'privacy-policy')}>
                       Privacy Policy
                     </a>
                   </li>
                   <li>
-                    <a href="/About#terms-of-service" className="footer-link" onClick={(e) => handleFooterLinkClick(e, 'terms-of-service')}>
+                    <a href="/About#terms-of-service" className={styles['footer-link']} onClick={(e) => handleFooterLinkClick(e, 'terms-of-service')}>
                       Terms of Service
                     </a>
                   </li>
                   <li>
-                    <a href="/About#careers" className="footer-link" onClick={(e) => handleFooterLinkClick(e, 'careers')}>
+                    <a href="/About#careers" className={styles['footer-link']} onClick={(e) => handleFooterLinkClick(e, 'careers')}>
                       Careers
                     </a>
                   </li>
                 </ul>
               </div>
-              <div className="footer-section"></div>
+              <div className={styles['footer-section']}></div>
             </div>
-            <div className="footer-bottom">
+            <div className={styles['footer-bottom']}>
               <p>Copyright © {new Date().getFullYear()} FounderCult.</p>
             </div>
           </div>
