@@ -287,7 +287,26 @@ export default function LandingPage() {
       <Head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Collaboration Platform for Startup Founders</title>
+        <title>FounderCult – Platform for Startup Founders</title>
+        <meta
+          name="description"
+          content="FounderCult helps startup founders turn chaos into clarity with the right tools, connections, and structure to grow smarter."
+        />
+        <meta name="robots" content="index, follow" />
+        <meta
+          name="keywords"
+          content="FounderCult, startup tools, startup platform, founder community"
+        />
+        <meta
+          property="og:title"
+          content="FounderCult – Platform for Startup Founders"
+        />
+        <meta
+          property="og:description"
+          content="Tools, services & connections to help founders grow faster and smarter."
+        />
+        <meta property="og:url" content="https://foundercult.com" />
+        <meta property="og:type" content="website" />
         <link
           rel="preload"
           href="/assets/Loading.json"
@@ -308,7 +327,7 @@ export default function LandingPage() {
         <header className={styles.header}>
           <nav className={styles.nav}>
             <a href="#" className={styles.logo}>
-              <img src="/assets/Logo.png" alt="StartupSync Logo" className={styles['logo-image']} />
+              <img src="/assets/Logo.png" className={styles['logo-image']} />
               FounderCult
             </a>
           </nav>
