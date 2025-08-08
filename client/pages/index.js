@@ -215,7 +215,7 @@ export default function LandingPage() {
       ],
     },
     {
-      title: '4. Fundraising & Investment',
+      title: '4. Fundraising',
       items: [
         '💸 Pitch Deck Design & Storytelling – Investor-ready, compelling decks',
         '🧾 Financial Modeling & Projections – 3–5 year models, cash flow, runway',
