@@ -655,7 +655,7 @@ export default function RegisterPage() {
                       </div>
                       <div className={styles.contactLink}>
                         <a
-                          href="https://api.whatsapp.com/send/?phone=%2B918472958581&text=Hello%2C+I+need+help+with+registration&type=phone_number&app_absent=0"
+                          href="https://api.whatsapp.com/send/?phone=%2B918822436250&text=Hello%2C+I+need+help+with+registration&type=phone_number&app_absent=0"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -698,7 +698,7 @@ export default function RegisterPage() {
                       </div>
                       <div className={styles.contactLink}>
                         <a
-                          href="https://api.whatsapp.com/send/?phone=%2B918472958581&text=Hello%2C+I+need+help+with+registration&type=phone_number&app_absent=0"
+                          href="https://api.whatsapp.com/send/?phone=%2B918822436250&text=Hello%2C+I+need+help+with+registration&type=phone_number&app_absent=0"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
